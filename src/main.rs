@@ -1,6 +1,7 @@
-#[macro_use] extern crate rocket;
-extern crate pretty_env_logger;
+#[macro_use]
+extern crate rocket;
 extern crate log;
+extern crate pretty_env_logger;
 
 use crate::spotify::*;
 
@@ -8,8 +9,8 @@ mod error;
 mod spotify;
 
 use error::Result;
-use rocket::State;
 use log::info;
+use rocket::State;
 
 #[get("/")]
 async fn index() -> &'static str {

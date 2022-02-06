@@ -1,15 +1,13 @@
-use std::ops::Add;
-use base64::encode;
 use chrono::prelude::*;
 use chrono::Duration;
-use log::{trace, debug};
+use log::{debug, trace};
+use std::ops::Add;
 
+use crate::error::*;
 use crate::spotify::credentials::SpotifyCredentials;
 use crate::spotify::response;
-use crate::error::*;
 
 const BASE_URL: &str = "https://api.spotify.com/v1";
-const GRANT_TYPE: &str = "client_credentials";
 
 pub struct SpotifyClient {
     credentials: SpotifyCredentials,
@@ -52,7 +50,10 @@ impl SpotifyClient {
         Ok(resp)
     }
 
-    async fn get<T: for <'a> serde::Deserialize<'a> + std::fmt::Debug>(&self, path: String) -> Result<T> {
+    async fn get<T: for<'a> serde::Deserialize<'a> + std::fmt::Debug>(
+        &self,
+        path: String,
+    ) -> Result<T> {
         let resp = reqwest::Client::new()
             .get(format!("{}/{}", BASE_URL, path))
             .header("Authorization", self.token.bearer_auth_header())
@@ -67,6 +68,7 @@ impl SpotifyClient {
 
     pub async fn get_shows(&self, show_id: String) -> Result<response::GetShow> {
         debug!("Getting Spotify show id {}", show_id);
-        self.get::<response::GetShow>(format!("shows/{}", show_id)).await
+        self.get::<response::GetShow>(format!("shows/{}", show_id))
+            .await
     }
 }

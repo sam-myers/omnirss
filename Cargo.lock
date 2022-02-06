@@ -1288,9 +1288,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "36e19e299f301be17927a7c05b8fa1c621e3227e6c3a0da65492701642901ff7"
 dependencies = [
  "atom_syndication",
+ "chrono",
  "derive_builder",
+ "mime",
  "never",
  "quick-xml",
+ "url",
 ]
 
 [[package]]

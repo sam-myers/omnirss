@@ -1,6 +1,5 @@
 use crate::error::*;
 use base64::encode;
-use crate::spotify::SpotifyClient;
 
 struct ClientKey(String);
 
@@ -16,7 +15,6 @@ impl ClientKey {
     }
 }
 
-
 pub struct SpotifyCredentials {
     client_id: ClientKey,
     client_secret: ClientKey,
@@ -27,14 +25,17 @@ impl SpotifyCredentials {
         let id = ClientKey::new(std::env::var("SPOTIFY_CLIENT_ID")?)?;
         let secret = ClientKey::new(std::env::var("SPOTIFY_CLIENT_SECRET")?)?;
 
-        Ok(Self{
+        Ok(Self {
             client_id: id,
             client_secret: secret,
         })
     }
 
     pub fn basic_auth_header(&self) -> String {
-        format!("Basic {}", encode(format!("{}:{}", self.client_id.0, self.client_secret.0)))
+        format!(
+            "Basic {}",
+            encode(format!("{}:{}", self.client_id.0, self.client_secret.0))
+        )
     }
 }
 
@@ -52,9 +53,18 @@ mod tests {
 
     #[test]
     fn test_invalid_key() {
-        assert!(matches!(ClientKey::new("".to_string()), Err(SpotiRssError::MissingKey)));
-        assert!(matches!(ClientKey::new("1234567890".to_string()), Err(SpotiRssError::BadKeyLength)));
-        assert!(matches!(ClientKey::new(SAMPLE_KEY.to_uppercase()), Err(SpotiRssError::BadKeyCharacters)));
+        assert!(matches!(
+            ClientKey::new("".to_string()),
+            Err(SpotiRssError::MissingKey)
+        ));
+        assert!(matches!(
+            ClientKey::new("1234567890".to_string()),
+            Err(SpotiRssError::BadKeyLength)
+        ));
+        assert!(matches!(
+            ClientKey::new(SAMPLE_KEY.to_uppercase()),
+            Err(SpotiRssError::BadKeyCharacters)
+        ));
     }
 
     #[test]
