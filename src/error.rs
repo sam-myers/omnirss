@@ -1,9 +1,9 @@
 use thiserror::Error;
 
-pub type Result<T> = std::result::Result<T, SpotiRssError>;
+pub type Result<T> = std::result::Result<T, OmniRssError>;
 
 #[derive(Error, Debug)]
-pub enum SpotiRssError {
+pub enum OmniRssError {
     #[error("key is missing")]
     MissingKey,
 

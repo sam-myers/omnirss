@@ -6,10 +6,10 @@ struct ClientKey(String);
 impl ClientKey {
     fn new(key: String) -> Result<Self> {
         match key.as_str() {
-            "" => Err(SpotiRssError::MissingKey),
-            k if k.len() != 32 => Err(SpotiRssError::BadKeyLength),
-            k if k.to_ascii_lowercase() != k => Err(SpotiRssError::BadKeyCharacters),
-            k if k.to_lowercase() != k => Err(SpotiRssError::BadKeyCharacters),
+            "" => Err(OmniRssError::MissingKey),
+            k if k.len() != 32 => Err(OmniRssError::BadKeyLength),
+            k if k.to_ascii_lowercase() != k => Err(OmniRssError::BadKeyCharacters),
+            k if k.to_lowercase() != k => Err(OmniRssError::BadKeyCharacters),
             _ => Ok(ClientKey(key)),
         }
     }
@@ -41,7 +41,7 @@ impl SpotifyCredentials {
 
 #[cfg(test)]
 mod tests {
-    use crate::error::SpotiRssError;
+    use crate::error::OmniRssError;
     use crate::spotify::credentials::{ClientKey, SpotifyCredentials};
 
     const SAMPLE_KEY: &str = "abc123abc4567abc890ab12345678901";
@@ -55,15 +55,15 @@ mod tests {
     fn test_invalid_key() {
         assert!(matches!(
             ClientKey::new("".to_string()),
-            Err(SpotiRssError::MissingKey)
+            Err(OmniRssError::MissingKey)
         ));
         assert!(matches!(
             ClientKey::new("1234567890".to_string()),
-            Err(SpotiRssError::BadKeyLength)
+            Err(OmniRssError::BadKeyLength)
         ));
         assert!(matches!(
             ClientKey::new(SAMPLE_KEY.to_uppercase()),
-            Err(SpotiRssError::BadKeyCharacters)
+            Err(OmniRssError::BadKeyCharacters)
         ));
     }
 
