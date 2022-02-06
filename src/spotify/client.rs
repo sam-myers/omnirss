@@ -5,6 +5,7 @@ use log::{debug, trace};
 use std::ops::Add;
 
 use crate::error::*;
+use crate::settings::Settings;
 use crate::spotify::credentials::SpotifyCredentials;
 use crate::spotify::response;
 
@@ -27,8 +28,8 @@ impl SpotifyToken {
 }
 
 impl SpotifyClient {
-    pub async fn new() -> Result<Self> {
-        let credentials = SpotifyCredentials::from_env_vars()?;
+    pub async fn from_config(config: &Settings) -> Result<Self> {
+        let credentials = SpotifyCredentials::from_config(config)?;
         let resp = Self::request_token(&credentials).await?;
 
         Ok(Self {

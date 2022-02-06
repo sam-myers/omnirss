@@ -1,5 +1,6 @@
 use crate::error::*;
 use base64::encode;
+use crate::settings::Settings;
 
 struct ClientKey(String);
 
@@ -21,9 +22,9 @@ pub struct SpotifyCredentials {
 }
 
 impl SpotifyCredentials {
-    pub fn from_env_vars() -> Result<Self> {
-        let id = ClientKey::new(std::env::var("SPOTIFY_CLIENT_ID")?)?;
-        let secret = ClientKey::new(std::env::var("SPOTIFY_CLIENT_SECRET")?)?;
+    pub fn from_config(config: &Settings) -> Result<Self> {
+        let id = ClientKey::new(config.spotify.client_id.clone())?;
+        let secret = ClientKey::new(config.spotify.client_secret.clone())?;
 
         Ok(Self {
             client_id: id,

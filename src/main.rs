@@ -2,10 +2,13 @@
 extern crate rocket;
 extern crate log;
 extern crate pretty_env_logger;
+#[macro_use]
+extern crate serde_derive;
 
 use crate::spotify::*;
 
 mod error;
+mod settings;
 mod spotify;
 
 use log::info;
@@ -23,10 +26,15 @@ async fn spotify_by_id(show_id: String, client: &State<SpotifyClient>) -> Option
 
 #[launch]
 async fn rocket() -> _ {
+    // Config
+    let config = settings::Settings::new().unwrap();
+
+    // Logging
+    std::env::set_var("RUST_LOG", &config.log_level);
     pretty_env_logger::init();
 
     info!("Starting Spotify client");
-    let spotify_client = spotify::SpotifyClient::new().await.unwrap();
+    let spotify_client = spotify::SpotifyClient::from_config(&config).await.unwrap();
 
     info!("Starting server");
     rocket::build()
