@@ -8,7 +8,6 @@ use crate::spotify::*;
 mod error;
 mod spotify;
 
-use error::Result;
 use log::info;
 use rocket::State;
 

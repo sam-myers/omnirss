@@ -19,15 +19,9 @@ pub enum SpotiRssError {
     #[error("connection error")]
     Connectivity(#[from] reqwest::Error),
 
-    #[error("api gave unexpected response")]
-    ApiUnexpectedResponse,
-
     #[error("couldn't parse date")]
     DateParseError(#[from] chrono::ParseError),
 
     #[error("couldn't validate rss feed")]
     RssValidationError(#[from] rss::validation::ValidationError),
-
-    #[error("bad credentials")]
-    BadCredentials,
 }

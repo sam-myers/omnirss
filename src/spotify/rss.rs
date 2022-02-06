@@ -1,4 +1,3 @@
-use chrono::NaiveDate;
 use rss::validation::Validate;
 use rss::{ChannelBuilder, Item};
 
