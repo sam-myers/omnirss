@@ -7,7 +7,7 @@ struct ClientKey(String);
 impl ClientKey {
     fn new(key: String) -> Result<Self> {
         match key.as_str() {
-            "" => Err(OmniRssError::MissingKey),
+            "" => Err(OmniRssError::MissingConfigValue("spotify key")),
             k if k.len() != 32 => Err(OmniRssError::BadKeyLength),
             k if k.to_ascii_lowercase() != k => Err(OmniRssError::BadKeyCharacters),
             k if k.to_lowercase() != k => Err(OmniRssError::BadKeyCharacters),

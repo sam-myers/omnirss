@@ -4,8 +4,8 @@ pub type Result<T> = std::result::Result<T, OmniRssError>;
 
 #[derive(Error, Debug)]
 pub enum OmniRssError {
-    #[error("key is missing")]
-    MissingKey,
+    #[error("missing config: {0}")]
+    MissingConfigValue(&'static str),
 
     #[error("key is not 32 digits")]
     BadKeyLength,
@@ -24,4 +24,7 @@ pub enum OmniRssError {
 
     #[error("couldn't validate rss feed")]
     RssValidationError(#[from] rss::validation::ValidationError),
+
+    #[error("couldn't connect to Redis")]
+    RedisError(#[from] redis::RedisError),
 }
