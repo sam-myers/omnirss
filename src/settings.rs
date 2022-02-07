@@ -42,8 +42,16 @@ pub struct Settings {
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::new();
-        s.merge(File::with_name("config"))?;
+        if let Err(_) = s.merge(File::with_name("config")) {
+            info!("No config file found, using only environment variables");
+            s = Config::new(); // The library freezes the type after a failed merge
+        }
         s.merge(Environment::new().separator("_"))?;
+
+        // Defaults
+        let _ = s.set_default("log_level", "info");
+        let _ = s.set_default("redis.port", 35884);
+
         s.try_into()
     }
 }
