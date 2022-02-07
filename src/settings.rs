@@ -46,7 +46,7 @@ impl Settings {
             info!("No config file found, using only environment variables");
             s = Config::new(); // The library freezes the type after a failed merge
         }
-        s.merge(Environment::new().separator("_"))?;
+        s.merge(Environment::new())?;
 
         // Defaults
         let _ = s.set_default("log_level", "info");
