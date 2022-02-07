@@ -1,5 +1,4 @@
 use redis::AsyncCommands;
-use rss::validation::Validate;
 use rss::{ChannelBuilder, Item};
 
 use crate::error::*;
@@ -76,11 +75,8 @@ impl SpotifyRss {
             .items(items)
             .build();
 
-        // Validate
-        channel.validate()?;
-        let channel_string: String = channel.to_string();
-
         // Save to Redis
+        let channel_string: String = channel.to_string();
         if let Err(e) = redis_con
             .set_ex::<&String, &String, ()>(&redis_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
             .await

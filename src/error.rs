@@ -22,9 +22,6 @@ pub enum OmniRssError {
     #[error("couldn't parse date")]
     DateParseError(#[from] chrono::ParseError),
 
-    #[error("couldn't validate rss feed")]
-    RssValidationError(#[from] rss::validation::ValidationError),
-
     #[error("couldn't connect to Redis")]
     RedisError(#[from] redis::RedisError),
 }
