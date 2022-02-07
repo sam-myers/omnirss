@@ -20,13 +20,17 @@ impl SpotifyRss {
             .to_string())
     }
 
-    pub async fn show_feed(spotify_client: &SpotifyClient, redis_client: &redis::Client, show_id: String) -> Result<String> {
+    pub async fn show_feed(
+        spotify_client: &SpotifyClient,
+        redis_client: &redis::Client,
+        show_id: String,
+    ) -> Result<String> {
         // Cached show available?
         let mut redis_con = redis_client.get_async_connection().await?;
         let redis_key = CacheKey::show_from_id(&show_id);
         if let Ok(show) = redis_con.get(&redis_key).await {
             debug!("Using cached feed");
-            return Ok(show)
+            return Ok(show);
         }
 
         // Get from API
@@ -77,7 +81,10 @@ impl SpotifyRss {
         let channel_string: String = channel.to_string();
 
         // Save to Redis
-        if let Err(e) = redis_con.set_ex::<&String, &String, ()>(&redis_key, &channel_string, CACHE_SHOW_FOR_SECONDS).await {
+        if let Err(e) = redis_con
+            .set_ex::<&String, &String, ()>(&redis_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
+            .await
+        {
             warn!("Error saving to Redis {}", e);
         }
 

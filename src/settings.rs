@@ -16,11 +16,19 @@ pub struct Redis {
 impl Redis {
     pub(crate) fn get_connection_url(&self) -> crate::error::Result<String> {
         if self.password == "" {
-            return Err(crate::error::OmniRssError::MissingConfigValue("redis password"))
+            return Err(crate::error::OmniRssError::MissingConfigValue(
+                "redis password",
+            ));
         }
 
-        debug!("Connecting to URL: rediss://:[PASSWORD_REDACTED]@{}:{}", self.endpoint, self.port);
-        Ok(format!("rediss://:{}@{}:{}", self.password, self.endpoint, self.port))
+        debug!(
+            "Connecting to URL: rediss://:[PASSWORD_REDACTED]@{}:{}",
+            self.endpoint, self.port
+        );
+        Ok(format!(
+            "rediss://:{}@{}:{}",
+            self.password, self.endpoint, self.port
+        ))
     }
 }
 

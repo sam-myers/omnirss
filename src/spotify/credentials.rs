@@ -1,6 +1,6 @@
 use crate::error::*;
-use base64::encode;
 use crate::settings::Settings;
+use base64::encode;
 
 struct ClientKey(String);
 
