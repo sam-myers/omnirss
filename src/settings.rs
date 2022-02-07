@@ -35,7 +35,7 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::new();
         s.merge(File::with_name("config"))?;
-        s.merge(Environment::new())?;
+        s.merge(Environment::new().separator("_"))?;
         s.try_into()
     }
 }
