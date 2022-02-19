@@ -79,25 +79,29 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
-    async fn get<T: for<'a> serde::Deserialize<'a> + std::fmt::Debug>(
-        &self,
-        path: String,
-    ) -> Result<T> {
-        // let token = self.current_token().await?;
+    pub async fn get_shows(&self, show_id: &String) -> Result<response::GetShow> {
+        debug!("Getting Spotify show id {}", show_id);
         let resp = reqwest::Client::new()
-            .get(format!("{}/{}", BASE_URL, path))
+            .get(format!("{}/shows/{}", BASE_URL, show_id))
             .header("Authorization", self.get_bearer_auth_header().await?)
             .query(&[("market", "US")])
             .send()
             .await?
-            .json::<T>()
+            .json::<response::GetShow>()
             .await?;
         Ok(resp)
     }
 
-    pub async fn get_shows(&self, show_id: String) -> Result<response::GetShow> {
-        debug!("Getting Spotify show id {}", show_id);
-        self.get::<response::GetShow>(format!("shows/{}", show_id))
-            .await
-    }
+    // pub async fn search_shows(&self, query: &String) -> Result<response::GetShow> {
+    //     debug!("Searching for show with query {}", query);
+    //     let resp = reqwest::Client::new()
+    //         .get(format!("{}/search", BASE_URL))
+    //         .header("Authorization", self.get_bearer_auth_header().await?)
+    //         .query(&[("market", "US"), ("type", "show"), ("q", query)])
+    //         .send()
+    //         .await?
+    //         .json::<response::GetShow>()
+    //         .await?;
+    //     Ok(resp)
+    // }
 }
