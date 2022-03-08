@@ -18,7 +18,7 @@ reqwest = { version = "0.11", features = ["json"] }
 
 # Async
 tokio = { version = "1", features = ["full"] }
-futures = "0.3.19"
+futures = "0.3.21"
 
 # Deserialization
 serde = "1.0.135"
