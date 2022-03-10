@@ -16,10 +16,13 @@ mod spotify;
 use cache::Ping;
 use log::info;
 use rocket::State;
+use rocket_dyn_templates::Template;
+use std::collections::HashMap;
 
 #[get("/")]
-async fn index() -> &'static str {
-    "Hello, world!"
+fn index() -> Template {
+    let context: HashMap<&str, &str> = HashMap::new();
+    Template::render("index", &context)
 }
 
 #[get("/health")]
@@ -41,8 +44,9 @@ async fn spotify_by_id(
         .ok()
 }
 
-#[launch]
-async fn rocket() -> _ {
+#[rocket::main]
+#[allow(unused_must_use)]
+async fn main() {
     // Config
     let config = settings::Settings::new().unwrap();
 
@@ -64,4 +68,7 @@ async fn rocket() -> _ {
         .manage(redis_client)
         .manage(spotify_client)
         .mount("/", routes![index, health, spotify_by_id])
+        .attach(Template::fairing())
+        .launch()
+        .await;
 }

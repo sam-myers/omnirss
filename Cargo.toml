@@ -44,5 +44,6 @@ config = { version = "0.11.0", default-features = false, features = ["toml"] }
 # Redis
 redis = { version = "0.21.5", default-features = false, features = ["tokio-comp", "tokio-native-tls-comp"] }
 
-# Async traits for caching helper
-async-trait = "0.1.52"
+[dependencies.rocket_dyn_templates]
+version = "0.1.0-rc.1"
+features = ["tera"]
