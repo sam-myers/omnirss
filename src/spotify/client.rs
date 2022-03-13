@@ -79,7 +79,7 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
-    pub async fn get_shows(&self, show_id: &String) -> Result<response::GetShow> {
+    pub async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
         debug!("Getting Spotify show id {}", show_id);
         let resp = reqwest::Client::new()
             .get(format!("{}/shows/{}", BASE_URL, show_id))

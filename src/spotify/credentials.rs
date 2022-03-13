@@ -56,7 +56,7 @@ mod tests {
     fn test_invalid_key() {
         assert!(matches!(
             ClientKey::new("".to_string()),
-            Err(OmniRssError::MissingKey)
+            Err(OmniRssError::MissingConfigValue("spotify key"))
         ));
         assert!(matches!(
             ClientKey::new("1234567890".to_string()),

@@ -48,23 +48,23 @@ async fn spotify_by_id(
 #[allow(unused_must_use)]
 async fn main() {
     // Config
-    let config = settings::Settings::new().unwrap();
-
-    // Logging
-    std::env::set_var("RUST_LOG", &config.log_level);
-    pretty_env_logger::init();
+    let rocket_builder = rocket::build();
+    let config: settings::Settings = rocket_builder.figment().extract().expect("config");
 
     // Cache
-    let redis_client = crate::cache::client_from_config(&config).unwrap();
+    let redis_client = crate::cache::client_from_config(&config).expect("redis client");
     if !redis_client.ping().await {
         panic!("Failed Redis health check");
     }
 
+    // Spotify API
     info!("Starting Spotify client");
-    let spotify_client = spotify::SpotifyClient::from_config(&config).await.unwrap();
+    let spotify_client = spotify::SpotifyClient::from_config(&config)
+        .await
+        .expect("spotify client");
 
     info!("Starting server");
-    rocket::build()
+    rocket_builder
         .manage(redis_client)
         .manage(spotify_client)
         .mount("/", routes![index, health, spotify_by_id])
