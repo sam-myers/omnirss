@@ -6,6 +6,7 @@ extern crate redis;
 #[macro_use]
 extern crate serde_derive;
 
+use crate::cache::*;
 use crate::spotify::*;
 
 mod cache;
@@ -13,7 +14,6 @@ mod error;
 mod settings;
 mod spotify;
 
-use cache::Ping;
 use log::info;
 use rocket::State;
 use rocket_dyn_templates::Template;
@@ -26,8 +26,8 @@ fn index() -> Template {
 }
 
 #[get("/health")]
-async fn health(redis_client: &State<redis::Client>) -> Option<&'static str> {
-    if !redis_client.ping().await {
+async fn health(redis_client: &State<RedisCache>) -> Option<&'static str> {
+    if !redis_client.inner().ping().await {
         return None;
     }
     Some("OK")
@@ -37,9 +37,9 @@ async fn health(redis_client: &State<redis::Client>) -> Option<&'static str> {
 async fn spotify_by_id(
     show_id: String,
     spotify_client: &State<SpotifyClient>,
-    redis_client: &State<redis::Client>,
+    cache: &State<RedisCache>,
 ) -> Option<String> {
-    SpotifyRss::show_feed(spotify_client, redis_client, show_id)
+    SpotifyRss::show_feed(spotify_client, cache.inner(), show_id)
         .await
         .ok()
 }
@@ -52,8 +52,8 @@ async fn main() {
     let config: settings::Settings = rocket_builder.figment().extract().expect("config");
 
     // Cache
-    let redis_client = crate::cache::client_from_config(&config).expect("redis client");
-    if !redis_client.ping().await {
+    let redis_cache = RedisCache::from_settings(&config).expect("redis client");
+    if !(&redis_cache).ping().await {
         panic!("Failed Redis health check");
     }
 
@@ -65,7 +65,7 @@ async fn main() {
 
     info!("Starting server");
     rocket_builder
-        .manage(redis_client)
+        .manage(redis_cache)
         .manage(spotify_client)
         .mount("/", routes![index, health, spotify_by_id])
         .attach(Template::fairing())

@@ -1,6 +1,6 @@
-use redis::AsyncCommands;
 use rss::{ChannelBuilder, Item};
 
+use crate::cache::Cache;
 use crate::error::*;
 use crate::spotify::cache::{CacheKey, CACHE_SHOW_FOR_SECONDS};
 use crate::SpotifyClient;
@@ -21,13 +21,12 @@ impl SpotifyRss {
 
     pub async fn show_feed(
         spotify_client: &SpotifyClient,
-        redis_client: &redis::Client,
+        cache: impl Cache,
         show_id: String,
     ) -> Result<String> {
         // Cached show available?
-        let mut redis_con = redis_client.get_async_connection().await?;
-        let redis_key = CacheKey::show_from_id(&show_id);
-        if let Ok(show) = redis_con.get(&redis_key).await {
+        let cache_key = CacheKey::show_from_id(&show_id);
+        if let Ok(show) = cache.get(&cache_key).await {
             debug!("Using cached feed");
             return Ok(show);
         }
@@ -77,8 +76,8 @@ impl SpotifyRss {
 
         // Save to Redis
         let channel_string: String = channel.to_string();
-        if let Err(e) = redis_con
-            .set_ex::<&String, &String, ()>(&redis_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
+        if let Err(e) = cache
+            .set(&cache_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
             .await
         {
             warn!("Error saving to Redis {}", e);
