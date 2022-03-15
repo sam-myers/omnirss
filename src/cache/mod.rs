@@ -1,3 +1,4 @@
+mod memory;
 mod redis;
 
 pub use self::redis::RedisCache;

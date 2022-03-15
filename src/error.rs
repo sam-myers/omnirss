@@ -24,4 +24,7 @@ pub enum OmniRssError {
 
     #[error("couldn't connect to Redis")]
     RedisError(#[from] redis::RedisError),
+
+    #[error("in memory data store didn't contain key")]
+    InMemoryKeyNotFound,
 }
