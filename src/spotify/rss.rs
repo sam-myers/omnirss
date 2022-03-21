@@ -3,7 +3,7 @@ use rss::{ChannelBuilder, Item};
 use crate::cache::Cache;
 use crate::error::*;
 use crate::spotify::cache::{CacheKey, CACHE_SHOW_FOR_SECONDS};
-use crate::Spotify;
+use crate::spotify::Spotify;
 
 pub struct SpotifyRss {}
 
@@ -89,6 +89,7 @@ impl SpotifyRss {
 
 #[cfg(test)]
 mod tests {
+    use crate::spotify::SpotifyRss;
     use crate::SpotifyRss;
 
     #[test]

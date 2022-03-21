@@ -7,9 +7,8 @@ use std::ops::Add;
 use crate::error::*;
 use crate::settings::Settings;
 use crate::spotify::credentials::SpotifyCredentials;
-use crate::spotify::response;
 use crate::spotify::token::SpotifyToken;
-use crate::Spotify;
+use crate::spotify::{response, Spotify};
 
 const BASE_URL: &str = "https://api.spotify.com/v1";
 

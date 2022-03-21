@@ -1,6 +1,6 @@
+use crate::cache::Cache;
 use crate::error::{OmniRssError, Result};
 use crate::settings::Settings;
-use crate::Cache;
 use redis::AsyncCommands;
 
 pub struct RedisCache(redis::Client);

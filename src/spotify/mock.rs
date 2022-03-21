@@ -1,6 +1,5 @@
 use crate::error::{OmniRssError, Result};
-use crate::spotify::response;
-use crate::Spotify;
+use crate::spotify::{response, Spotify};
 
 pub struct MockSpotifyClient {}
 
