@@ -6,14 +6,13 @@ use futures::lock::Mutex;
 use std::collections::HashMap;
 use std::ops::Add;
 
-pub(crate) struct MemoryCache {
+pub struct MemoryCache {
     cache: Mutex<HashMap<String, (String, chrono::DateTime<chrono::Utc>)>>,
     time_offset: i64,
 }
 
 impl MemoryCache {
-    #[cfg(test)]
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             cache: Mutex::new(HashMap::new()),
             time_offset: 0,
@@ -65,8 +64,8 @@ impl Cache for MemoryCache {
 #[cfg(test)]
 mod tests {
     use crate::cache::memory::MemoryCache;
+    use crate::cache::Cache;
     use crate::error::OmniRssError;
-    use crate::Cache;
 
     #[tokio::test]
     async fn ping() {

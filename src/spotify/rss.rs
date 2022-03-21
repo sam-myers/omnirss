@@ -90,7 +90,6 @@ impl SpotifyRss {
 #[cfg(test)]
 mod tests {
     use crate::spotify::SpotifyRss;
-    use crate::SpotifyRss;
 
     #[test]
     fn parse_release_date() {

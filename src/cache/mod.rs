@@ -1,6 +1,7 @@
 mod memory;
 mod redis;
 
+pub use self::memory::MemoryCache;
 pub use self::redis::RedisCache;
 use crate::error::Result;
 
