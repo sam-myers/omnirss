@@ -27,4 +27,7 @@ pub enum OmniRssError {
 
     #[error("in memory data store didn't contain key")]
     InMemoryKeyNotFound,
+
+    #[error("mock spotify has not implemented: {0}")]
+    MockSpotifyNotImplemented(&'static str),
 }

@@ -1,6 +1,7 @@
 mod cache;
 mod client;
 mod credentials;
+mod mock;
 mod response;
 mod rss;
 mod token;
