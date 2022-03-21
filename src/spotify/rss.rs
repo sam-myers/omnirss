@@ -3,7 +3,7 @@ use rss::{ChannelBuilder, Item};
 use crate::cache::Cache;
 use crate::error::*;
 use crate::spotify::cache::{CacheKey, CACHE_SHOW_FOR_SECONDS};
-use crate::SpotifyClient;
+use crate::Spotify;
 
 pub struct SpotifyRss {}
 
@@ -20,7 +20,7 @@ impl SpotifyRss {
     }
 
     pub async fn show_feed(
-        spotify_client: &SpotifyClient,
+        spotify_client: impl Spotify,
         cache: impl Cache,
         show_id: String,
     ) -> Result<String> {
@@ -80,7 +80,7 @@ impl SpotifyRss {
             .set(&cache_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
             .await
         {
-            warn!("Error saving to Redis {}", e);
+            warn!("Error saving to Redis {:?}", e);
         }
 
         Ok(channel_string)

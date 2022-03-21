@@ -39,7 +39,7 @@ async fn spotify_by_id(
     spotify_client: &State<SpotifyClient>,
     cache: &State<RedisCache>,
 ) -> Option<String> {
-    SpotifyRss::show_feed(spotify_client, cache.inner(), show_id)
+    SpotifyRss::show_feed(spotify_client.inner(), cache.inner(), show_id)
         .await
         .ok()
 }
