@@ -1,19 +1,16 @@
 #[derive(Debug, Deserialize)]
-pub struct Spotify {
-    pub(crate) client_id: String,
-    pub(crate) client_secret: String,
+pub struct Settings {
+    pub(crate) spotify_client_id: String,
+    pub(crate) spotify_client_secret: String,
+
+    pub(crate) redis_endpoint: String,
+    pub(crate) redis_password: String,
+    pub(crate) redis_port: u32,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct Redis {
-    pub(crate) endpoint: String,
-    pub(crate) password: String,
-    pub(crate) port: u32,
-}
-
-impl Redis {
-    pub(crate) fn get_connection_url(&self) -> crate::error::Result<String> {
-        if self.password.is_empty() {
+impl Settings {
+    pub(crate) fn redis_connection_url(&self) -> crate::error::Result<String> {
+        if self.redis_password.is_empty() {
             return Err(crate::error::OmniRssError::MissingConfigValue(
                 "redis password",
             ));
@@ -21,17 +18,11 @@ impl Redis {
 
         debug!(
             "Connecting to URL: rediss://:[PASSWORD_REDACTED]@{}:{}",
-            self.endpoint, self.port
+            self.redis_endpoint, self.redis_port
         );
         Ok(format!(
             "rediss://:{}@{}:{}",
-            self.password, self.endpoint, self.port
+            self.redis_password, self.redis_endpoint, self.redis_port
         ))
     }
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Settings {
-    pub(crate) redis: Redis,
-    pub(crate) spotify: Spotify,
 }

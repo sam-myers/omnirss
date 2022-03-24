@@ -2,7 +2,7 @@ use crate::settings::Settings;
 
 pub fn client_from_config(config: &Settings) -> redis::RedisResult<redis::Client> {
     info!("Starting Redis client");
-    redis::Client::open(config.redis.get_connection_url().unwrap())
+    redis::Client::open(config.redis_connection_url().unwrap())
 }
 
 #[rocket::async_trait]

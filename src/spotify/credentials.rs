@@ -23,8 +23,8 @@ pub struct SpotifyCredentials {
 
 impl SpotifyCredentials {
     pub fn from_config(config: &Settings) -> Result<Self> {
-        let id = ClientKey::new(config.spotify.client_id.clone())?;
-        let secret = ClientKey::new(config.spotify.client_secret.clone())?;
+        let id = ClientKey::new(config.spotify_client_id.clone())?;
+        let secret = ClientKey::new(config.spotify_client_secret.clone())?;
 
         Ok(Self {
             client_id: id,
