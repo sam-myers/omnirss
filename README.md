@@ -1,31 +1,42 @@
-# fun/omnirss
+# OmniRSS
+
+Converts Spotify show feeds into RSS.
+
+https://rss.subtlesoftware.dev/
 
 
+## How to Use
 
-## Getting Started
+Direct your RSS client to `https://rss.subtlesoftware.dev/spotify/id/$SHOW_ID`.
 
-Download links:
+TODO: Method to search for show ID.
 
-SSH clone URL: ssh://git@git.jetbrains.space/subtlesoftware/fun/omnirss.git
-
-HTTPS clone URL: https://git.jetbrains.space/subtlesoftware/fun/omnirss.git
-
+Example: [Joe Rogan](https://rss.subtlesoftware.dev/show/id/4rOoJ6Egrf8K2IrywzwOMk)
 
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+## Development
 
-## Prerequisites
+### Architecture
 
-What things you need to install the software and how to install them.
+![architecture](https://user-images.githubusercontent.com/5410234/160204775-f5efb737-ce6a-4698-a603-6bc159f56608.png)
 
-```
-Examples
-```
+Backend is hosted in [Render](https://render.com/).
+- Performance issues on current free plan, need to plan upgrade
 
-## Deployment
+Redis is hosted in [Upstash](https://upstash.com/).
+- Happy with performance, nowhere close to reaching free tier limit
 
-Add additional notes about how to deploy this on a production system.
+Secrets are hosted in [Doppler](https://doppler.com/).
+- Happy so far.
 
-## Resources
 
-Add links to external resources for this project, such as CI server, bug tracker, etc.
+### Deploy to Production
+
+Merges to master are automatically deployed.
+
+
+### Local Development
+
+This is a traditionally organized Rust project.
+
+Download the `doppler` CLI and confugre. Run with `doppler run -- cargo run` to populate configuration.
