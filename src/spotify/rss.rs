@@ -1,3 +1,4 @@
+use log::debug;
 use rss::{ChannelBuilder, Item};
 
 use crate::cache::Cache;
@@ -25,6 +26,7 @@ impl SpotifyRss {
         show_id: String,
     ) -> Result<String> {
         // Cached show available?
+        debug!("Checking cache...");
         let cache_key = CacheKey::show_from_id(&show_id);
         if let Ok(show) = cache.get(&cache_key).await {
             debug!("Using cached feed");
@@ -32,12 +34,14 @@ impl SpotifyRss {
         }
 
         // Get from API
+        debug!("Getting show from Spotify API...");
         let show = spotify_client.get_shows(&show_id).await?;
 
         let title = show.name.clone();
         let link = show.external_urls.spotify.clone();
         let description = show.html_description.clone();
 
+        debug!("Converting Spotify episodes to RSS items");
         let items: Vec<Item> = show
             .episodes
             .items
@@ -67,6 +71,7 @@ impl SpotifyRss {
             })
             .collect();
 
+        debug!("Building RSS channel");
         let channel = ChannelBuilder::default()
             .title(title)
             .link(link)
@@ -75,6 +80,7 @@ impl SpotifyRss {
             .build();
 
         // Save to Redis
+        debug!("Saving to Redis");
         let channel_string: String = channel.to_string();
         if let Err(e) = cache
             .set(&cache_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
