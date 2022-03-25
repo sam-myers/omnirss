@@ -8,9 +8,6 @@ extern crate serde_derive;
 
 pub mod cache;
 pub mod error;
-mod routes;
-mod server_start;
+pub mod routes;
 pub mod settings;
 pub mod spotify;
-
-pub use server_start::server_start;
