@@ -9,7 +9,7 @@ impl RedisCache {
     pub fn from_settings(config: &Settings) -> Result<Self> {
         info!("Starting Redis client");
         Ok(Self(redis::Client::open(
-            config.redis.get_connection_url().unwrap(),
+            config.redis_connection_url().unwrap(),
         )?))
     }
 }

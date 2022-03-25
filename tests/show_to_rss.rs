@@ -5,7 +5,7 @@ use std::path::Path;
 #[tokio::test]
 async fn joe_rogan_show_to_rss() {
     let spotify_client = omnirss::spotify::MockSpotifyClient {};
-    let cache = omnirss::cache::MemoryCache::new();
+    let cache: omnirss::cache::MemoryCache = Default::default();
 
     let feed = omnirss::spotify::SpotifyRss::show_feed(
         spotify_client,

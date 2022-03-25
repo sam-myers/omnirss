@@ -11,14 +11,16 @@ pub struct MemoryCache {
     time_offset: i64,
 }
 
-impl MemoryCache {
-    pub fn new() -> Self {
+impl Default for MemoryCache {
+    fn default() -> Self {
         Self {
             cache: Mutex::new(HashMap::new()),
             time_offset: 0,
         }
     }
+}
 
+impl MemoryCache {
     #[cfg(test)]
     pub(crate) fn time_travel(mut self, seconds: i64) -> Self {
         self.time_offset += seconds;
@@ -69,13 +71,13 @@ mod tests {
 
     #[tokio::test]
     async fn ping() {
-        let mem_cache = MemoryCache::new();
+        let mem_cache: MemoryCache = Default::default();
         assert!(mem_cache.ping().await);
     }
 
     #[tokio::test]
     async fn get_nonexistent() {
-        let mem_cache = MemoryCache::new();
+        let mem_cache: MemoryCache = Default::default();
         assert!(matches!(
             mem_cache.get(&"foo".to_string()).await,
             Err(OmniRssError::InMemoryKeyNotFound)
@@ -84,7 +86,7 @@ mod tests {
 
     #[tokio::test]
     async fn get_set() {
-        let mem_cache = MemoryCache::new();
+        let mem_cache: MemoryCache = Default::default();
         let key = "foo".to_string();
         let value = "bar".to_string();
 
@@ -98,7 +100,7 @@ mod tests {
 
     #[tokio::test]
     async fn set_ttl() {
-        let mut mem_cache = MemoryCache::new();
+        let mut mem_cache: MemoryCache = Default::default();
         let key = "foo".to_string();
         let value = "bar".to_string();
 
