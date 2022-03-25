@@ -69,7 +69,7 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
-    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
+    async fn _get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
         debug!("Getting Spotify show id {}", show_id);
         let resp = reqwest::Client::new()
             .get(format!("{}/shows/{}", BASE_URL, show_id))
@@ -77,7 +77,7 @@ impl SpotifyClient {
             .query(&[("market", "US")])
             .send()
             .await?
-            .json::<response::GetShow>()
+            .json::<Box<response::GetShow>>()
             .await?;
         Ok(resp)
     }
@@ -85,14 +85,14 @@ impl SpotifyClient {
 
 #[rocket::async_trait]
 impl Spotify for SpotifyClient {
-    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
-        self.get_shows(show_id).await
+    async fn get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
+        self._get_shows(show_id).await
     }
 }
 
 #[rocket::async_trait]
 impl<'a> Spotify for &'a SpotifyClient {
-    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
-        self.get_shows(show_id).await
+    async fn get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
+        self._get_shows(show_id).await
     }
 }
