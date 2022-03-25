@@ -13,5 +13,5 @@ pub use mock::MockSpotifyClient;
 
 #[rocket::async_trait]
 pub trait Spotify {
-    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow>;
+    async fn get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>>;
 }
