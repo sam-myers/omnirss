@@ -24,4 +24,10 @@ pub enum OmniRssError {
 
     #[error("couldn't connect to Redis")]
     RedisError(#[from] redis::RedisError),
+
+    #[error("in memory data store didn't contain key")]
+    InMemoryKeyNotFound,
+
+    #[error("mock spotify has not implemented: {0}")]
+    MockSpotifyNotImplemented(&'static str),
 }

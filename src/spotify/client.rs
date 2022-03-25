@@ -7,24 +7,14 @@ use std::ops::Add;
 use crate::error::*;
 use crate::settings::Settings;
 use crate::spotify::credentials::SpotifyCredentials;
-use crate::spotify::response;
+use crate::spotify::token::SpotifyToken;
+use crate::spotify::{response, Spotify};
 
 const BASE_URL: &str = "https://api.spotify.com/v1";
 
 pub struct SpotifyClient {
     credentials: SpotifyCredentials,
     token: Mutex<SpotifyToken>,
-}
-
-struct SpotifyToken {
-    token: String,
-    expiry: DateTime<Utc>,
-}
-
-impl SpotifyToken {
-    pub fn bearer_auth_header(&self) -> String {
-        format!("Bearer {}", self.token)
-    }
 }
 
 impl SpotifyClient {
@@ -79,7 +69,7 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
-    pub async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
+    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
         debug!("Getting Spotify show id {}", show_id);
         let resp = reqwest::Client::new()
             .get(format!("{}/shows/{}", BASE_URL, show_id))
@@ -91,17 +81,18 @@ impl SpotifyClient {
             .await?;
         Ok(resp)
     }
+}
 
-    // pub async fn search_shows(&self, query: &String) -> Result<response::GetShow> {
-    //     debug!("Searching for show with query {}", query);
-    //     let resp = reqwest::Client::new()
-    //         .get(format!("{}/search", BASE_URL))
-    //         .header("Authorization", self.get_bearer_auth_header().await?)
-    //         .query(&[("market", "US"), ("type", "show"), ("q", query)])
-    //         .send()
-    //         .await?
-    //         .json::<response::GetShow>()
-    //         .await?;
-    //     Ok(resp)
-    // }
+#[rocket::async_trait]
+impl Spotify for SpotifyClient {
+    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
+        self.get_shows(show_id).await
+    }
+}
+
+#[rocket::async_trait]
+impl<'a> Spotify for &'a SpotifyClient {
+    async fn get_shows(&self, show_id: &str) -> Result<response::GetShow> {
+        self.get_shows(show_id).await
+    }
 }
