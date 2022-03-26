@@ -5,6 +5,7 @@ use crate::cache::Cache;
 use crate::error::*;
 use crate::response::{SearchResult, SearchResults};
 use crate::search_query::SearchQuery;
+use crate::settings::Settings;
 use crate::spotify::cache::{CacheKey, CACHE_SEARCH_FOR_SECONDS, CACHE_SHOW_FOR_SECONDS};
 use crate::spotify::response::Search;
 use crate::spotify::Spotify;
@@ -99,13 +100,18 @@ impl SpotifyService {
         spotify_client: impl Spotify,
         cache: impl Cache,
         query: SearchQuery,
+        settings: &Settings,
     ) -> Result<SearchResults> {
         debug!("Checking cache...");
         let cache_key = CacheKey::search(&query.0);
         if let Ok(raw_search) = cache.get(&cache_key).await {
             debug!("Using cached search");
             let search: Search = serde_json::from_str(&raw_search)?;
-            return Ok(Self::spotify_search_to_results(search, query.0.clone()));
+            return Ok(Self::spotify_search_to_results(
+                search,
+                query.0.clone(),
+                settings,
+            ));
         }
 
         debug!("Searching Spotify API...");
@@ -120,10 +126,18 @@ impl SpotifyService {
             warn!("Error saving to cache {:?}", e);
         }
 
-        Ok(Self::spotify_search_to_results(*spotify_search, query.0))
+        Ok(Self::spotify_search_to_results(
+            *spotify_search,
+            query.0,
+            settings,
+        ))
     }
 
-    fn spotify_search_to_results(search: Search, query: String) -> SearchResults {
+    fn spotify_search_to_results(
+        search: Search,
+        query: String,
+        settings: &Settings,
+    ) -> SearchResults {
         SearchResults {
             query,
             results: search
@@ -141,6 +155,7 @@ impl SpotifyService {
                         name: i.name,
                         description: i.description,
                         image_url,
+                        rss_url: format!("{}/spotify/id/{}", settings.base_url, i.id),
                     }
                 })
                 .collect(),

@@ -12,4 +12,5 @@ pub struct SearchResult {
     pub name: String,
     pub description: String,
     pub image_url: Option<String>,
+    pub rss_url: String,
 }

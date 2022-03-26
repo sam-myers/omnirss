@@ -10,6 +10,16 @@
     <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="assets/css/Projects-Horizontal.css">
+
+    <script>
+        function copy_to_clipboard(url) {
+            navigator.clipboard.writeText(url).then(function() {
+                alert('Paste into your RSS client');
+            }, function(err) {
+                console.error('Could not copy to clipboard: ', err);
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -33,10 +43,12 @@
                 {% for result in results %}
                 <div class="col-sm-6 item">
                     <div class="row">
-                        <div class="col-md-12 col-lg-5"><a href="#"><img class="img-fluid" src="{{ result.image_url }}"></a></div>
+                        <div class="col-md-12 col-lg-5"><img class="img-fluid" src="{{ result.image_url }}"></div>
                         <div class="col">
                             <h3 class="name">{{ result.name }}</h3>
                             <p class="description">{{ result.description | truncate(length=260) }}</p>
+                            <p></p>
+                            <button class="btn btn-secondary" type="button" data-bs-toggle="toast" data-bs-target="#toast-1" onclick="copy_to_clipboard('{{ result.rss_url }}')">Copy RSS Feed to Clipboard</button>
                         </div>
                     </div>
                 </div>

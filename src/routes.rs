@@ -1,5 +1,6 @@
 use crate::cache::{Cache, RedisCache};
 use crate::search_query::SearchQuery;
+use crate::settings::Settings;
 use crate::spotify::{SpotifyClient, SpotifyService};
 use rocket::{Route, State};
 use rocket_dyn_templates::Template;
@@ -28,10 +29,12 @@ async fn search(
     search: SearchQuery,
     spotify_client: &State<SpotifyClient>,
     cache: &State<RedisCache>,
+    settings: &State<Settings>,
 ) -> Option<Template> {
-    let context = SpotifyService::search_show(spotify_client.inner(), cache.inner(), search)
-        .await
-        .ok()?;
+    let context =
+        SpotifyService::search_show(spotify_client.inner(), cache.inner(), search, settings)
+            .await
+            .ok()?;
 
     Some(Template::render("search-results", &context))
 }

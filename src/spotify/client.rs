@@ -22,8 +22,6 @@ impl SpotifyClient {
         let credentials = SpotifyCredentials::from_config(config)?;
         let resp = Self::request_token(&credentials).await?;
 
-        log::info!("Access token: {}", resp.access_token);
-
         Ok(Self {
             credentials,
             token: Mutex::new(SpotifyToken {
