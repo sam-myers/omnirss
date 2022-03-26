@@ -1,6 +1,7 @@
 use crate::cache::{Cache, RedisCache};
 use crate::{routes, settings, spotify};
 use log::info;
+use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 
 #[allow(unused_must_use)]
@@ -25,6 +26,7 @@ pub async fn server_start() {
     rocket_builder
         .manage(redis_cache)
         .manage(spotify_client)
+        .mount("/", FileServer::from("public"))
         .mount("/", routes::routes())
         .attach(Template::fairing())
         .launch()

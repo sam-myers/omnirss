@@ -1,14 +1,7 @@
 use crate::cache::{Cache, RedisCache};
+use crate::search_query::SearchQuery;
 use crate::spotify::{SpotifyClient, SpotifyRss};
 use rocket::{Route, State};
-use rocket_dyn_templates::Template;
-use std::collections::HashMap;
-
-#[get("/")]
-fn index() -> Template {
-    let context: HashMap<&str, &str> = HashMap::new();
-    Template::render("index", &context)
-}
 
 #[get("/health")]
 async fn health(redis_client: &State<RedisCache>) -> Option<&'static str> {
@@ -29,6 +22,14 @@ async fn spotify_by_id(
         .ok()
 }
 
+#[get("/?<search>")]
+async fn search(search: SearchQuery<'_>) -> String {
+    format!(
+        "You searched for: {}\n Sorry, search isn't implemented just yet!",
+        search.0
+    )
+}
+
 pub fn routes() -> Vec<Route> {
-    routes![index, health, spotify_by_id]
+    routes![health, spotify_by_id, search]
 }
