@@ -35,7 +35,7 @@ impl SpotifyRss {
 
         // Get from API
         debug!("Getting show from Spotify API...");
-        let show = spotify_client.get_shows(&show_id).await?;
+        let show = spotify_client.get_show(&show_id).await?;
 
         let title = show.name.clone();
         let link = show.external_urls.spotify.clone();
