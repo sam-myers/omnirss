@@ -11,5 +11,5 @@ pub struct SearchResults {
 pub struct SearchResult {
     pub name: String,
     pub description: String,
-    pub image_url: String,
+    pub image_url: Option<String>,
 }

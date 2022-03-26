@@ -3,7 +3,10 @@ use rss::{ChannelBuilder, Item};
 
 use crate::cache::Cache;
 use crate::error::*;
-use crate::spotify::cache::{CacheKey, CACHE_SHOW_FOR_SECONDS};
+use crate::response::{SearchResult, SearchResults};
+use crate::search_query::SearchQuery;
+use crate::spotify::cache::{CacheKey, CACHE_SEARCH_FOR_SECONDS, CACHE_SHOW_FOR_SECONDS};
+use crate::spotify::response::Search;
 use crate::spotify::Spotify;
 
 pub struct SpotifyService {}
@@ -27,7 +30,7 @@ impl SpotifyService {
     ) -> Result<String> {
         // Cached show available?
         debug!("Checking cache...");
-        let cache_key = CacheKey::show_from_id(&show_id);
+        let cache_key = CacheKey::show(&show_id);
         if let Ok(show) = cache.get(&cache_key).await {
             debug!("Using cached feed");
             return Ok(show);
@@ -80,16 +83,68 @@ impl SpotifyService {
             .build();
 
         // Save to Redis
-        debug!("Saving to Redis");
+        debug!("Saving to cache...");
         let channel_string: String = channel.to_string();
         if let Err(e) = cache
             .set(&cache_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
             .await
         {
-            warn!("Error saving to Redis {:?}", e);
+            warn!("Error saving to cache {:?}", e);
         }
 
         Ok(channel_string)
+    }
+
+    pub async fn search_show(
+        spotify_client: impl Spotify,
+        cache: impl Cache,
+        query: SearchQuery,
+    ) -> Result<SearchResults> {
+        debug!("Checking cache...");
+        let cache_key = CacheKey::search(&query.0);
+        if let Ok(raw_search) = cache.get(&cache_key).await {
+            debug!("Using cached search");
+            let search: Search = serde_json::from_str(&raw_search)?;
+            return Ok(Self::spotify_search_to_results(search, query.0.clone()));
+        }
+
+        debug!("Searching Spotify API...");
+        let spotify_search = spotify_client.search_show(&query.0).await?;
+
+        debug!("Saving to cache...");
+        let cache_value = serde_json::to_string(&spotify_search)?;
+        if let Err(e) = cache
+            .set(&cache_key, &cache_value, CACHE_SEARCH_FOR_SECONDS)
+            .await
+        {
+            warn!("Error saving to cache {:?}", e);
+        }
+
+        Ok(Self::spotify_search_to_results(*spotify_search, query.0))
+    }
+
+    fn spotify_search_to_results(search: Search, query: String) -> SearchResults {
+        SearchResults {
+            query,
+            results: search
+                .shows
+                .items
+                .into_iter()
+                .map(|i| {
+                    let image_url = i
+                        .images
+                        .iter()
+                        .find(|i| i.width == 300)
+                        .map(|i| i.url.clone());
+
+                    SearchResult {
+                        name: i.name,
+                        description: i.description,
+                        image_url,
+                    }
+                })
+                .collect(),
+        }
     }
 }
 
