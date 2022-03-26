@@ -13,5 +13,6 @@ mod search_query;
 mod server_start;
 pub mod settings;
 pub mod spotify;
+mod response;
 
 pub use server_start::server_start;

@@ -3,10 +3,10 @@ mod client;
 mod credentials;
 mod mock;
 mod response;
-mod rss;
+mod service;
 mod token;
 
-pub use self::rss::SpotifyRss;
+pub use self::service::SpotifyService;
 use crate::error::Result;
 pub use client::SpotifyClient;
 pub use mock::MockSpotifyClient;

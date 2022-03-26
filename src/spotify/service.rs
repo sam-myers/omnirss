@@ -6,9 +6,9 @@ use crate::error::*;
 use crate::spotify::cache::{CacheKey, CACHE_SHOW_FOR_SECONDS};
 use crate::spotify::Spotify;
 
-pub struct SpotifyRss {}
+pub struct SpotifyService {}
 
-impl SpotifyRss {
+impl SpotifyService {
     // Tries to return the date in RFC 2822 format
     // In: "2021-12-14",
     // Out: "01 Jun 2016 14:31:46 -0700"
@@ -48,7 +48,7 @@ impl SpotifyRss {
             .into_iter()
             .map(|i| {
                 let pub_date: Option<String> = match i.release_date_precision.as_str() {
-                    "day" => SpotifyRss::parse_release_date(i.release_date).ok(),
+                    "day" => SpotifyService::parse_release_date(i.release_date).ok(),
                     _ => None,
                 };
 
@@ -95,14 +95,14 @@ impl SpotifyRss {
 
 #[cfg(test)]
 mod tests {
-    use crate::spotify::SpotifyRss;
+    use crate::spotify::SpotifyService;
 
     #[test]
     fn parse_release_date() {
         let initial = "2021-12-14".to_string();
         let expected = "Tue, 14 Dec 2021 15:07:00 -0500".to_string();
 
-        let parsed = SpotifyRss::parse_release_date(initial).unwrap();
+        let parsed = SpotifyService::parse_release_date(initial).unwrap();
         assert_eq!(parsed, expected);
     }
 }
