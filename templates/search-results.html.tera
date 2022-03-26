@@ -13,11 +13,21 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
+        <div class="container"><a class="navbar-brand" href="/">OmniRSS</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
+            <div class="collapse navbar-collapse" id="navcol-1"></div>
+        </div>
+    </nav>
     <section class="projects-horizontal">
         <div class="container">
             <div class="intro">
                 <h2 class="text-center">Results</h2>
-                <p class="text-center">You searched for "{{ query }}"</p>
+                <form>
+                    <div class="row">
+                        <div class="col-12 col-md-9 mb-2 mb-md-0"><input class="form-control form-control-lg" type="text" placeholder="Show name..." name="search" required="" minlength="1" value="{{ query }}"></div>
+                        <div class="col-12 col-md-3"><button class="btn btn-primary btn-lg" type="submit">Search</button></div>
+                    </div>
+                </form>
             </div>
             <div class="row projects">
                 {% for result in results %}
