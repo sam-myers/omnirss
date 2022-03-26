@@ -2,8 +2,6 @@
 
 Converts Spotify show feeds into RSS.
 
-https://rss.subtlesoftware.dev/
-
 
 ## How to Use
 
@@ -14,7 +12,7 @@ TODO: Method to search for show ID.
 Example: [Joe Rogan](https://rss.subtlesoftware.dev/spotify/id/4rOoJ6Egrf8K2IrywzwOMk)
 
 
-## Development
+## Engineering
 
 ### Architecture
 
@@ -29,11 +27,21 @@ Secrets are hosted in [Doppler](https://doppler.com/).
 
 ### Deploy to Production
 
-Merges to master are automatically deployed.
+Merges to `master` are automatically deployed.
 
 
 ### Local Development
 
-This is a traditionally organized Rust project.
+Test with `cargo test`.
 
-Download the `doppler` CLI and configure. Run with `doppler run -- cargo run` to populate configuration.
+Download the `doppler` CLI to use the development secrets. Start with `doppler run -- cargo run`.
+
+Without the dev secrets, 
+
+
+### Quality Control
+
+CI ensures that the following pass:
+- `cargo test`
+- `cargo fmt`
+- `cargo clippy`
