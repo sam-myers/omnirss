@@ -1,11 +1,6 @@
 name: Cypress
 
-on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
+on: [push]
 
 jobs:
   test:
@@ -26,6 +21,7 @@ jobs:
         with:
           build: cargo build
           start: doppler run -- cargo run
+          record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
