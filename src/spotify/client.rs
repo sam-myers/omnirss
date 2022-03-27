@@ -18,8 +18,8 @@ pub struct SpotifyClient {
 }
 
 impl SpotifyClient {
-    pub async fn from_config(config: &Settings) -> Result<Self> {
-        let credentials = SpotifyCredentials::from_config(config)?;
+    pub async fn from_settings(settings: &Settings) -> Result<Self> {
+        let credentials = SpotifyCredentials::from_settings(settings)?;
         let resp = Self::request_token(&credentials).await?;
 
         Ok(Self {

@@ -8,6 +8,9 @@ pub struct Settings {
     pub(crate) redis_endpoint: String,
     pub(crate) redis_password: String,
     pub(crate) redis_port: u32,
+
+    pub(crate) sentry_env: String,
+    pub(crate) sentry_url: String,
 }
 
 impl Settings {
