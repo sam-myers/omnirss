@@ -15,6 +15,8 @@ Redis is hosted in [Upstash](https://upstash.com/).
 
 Secrets are hosted in [Doppler](https://doppler.com/).
 
+End-to-end test results on [Cypress Dashboard](https://dashboard.cypress.io/projects/srh5kf/runs).
+
 
 ### Deploy to Production
 
@@ -27,12 +29,14 @@ Test with `cargo test`.
 
 Download the `doppler` CLI to use the development secrets. Start with `doppler run -- cargo run`.
 
-Without the dev secrets, 
-
 
 ### Quality Control
 
-CI ensures that the following pass:
-- `cargo test`
-- `cargo fmt`
-- `cargo clippy`
+All of the following run in CI on pull request.
+
+| Test              | How to Run Locally          | Details                                    |
+|-------------------|-----------------------------|--------------------------------------------|
+| Unit Tests        | `cargo test`                | Rust, self-contained                       |
+| Integration Tests | `cargo test`                | Rust, uses mocked services                 |
+| Cypress           | `yarn run cypress open`     | Cypress, browser automation, real services |
+| Lints             | `cargo fmt`, `cargo clippy` | Applies to Rust components                 |
