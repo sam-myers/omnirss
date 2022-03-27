@@ -8,16 +8,6 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
     <link rel="stylesheet" href="assets/css/Projects-Horizontal.css">
-
-    <script>
-        function copy_to_clipboard(url) {
-            navigator.clipboard.writeText(url).then(function() {
-                alert('Paste into your RSS client');
-            }, function(err) {
-                console.error('Could not copy to clipboard: ', err);
-            });
-        }
-    </script>
 </head>
 
 <body>
@@ -56,6 +46,7 @@
     </section>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
+    <script src="assets/js/clipboard.js"></script>
 </body>
 
 </html>
