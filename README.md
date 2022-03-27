@@ -3,15 +3,6 @@
 Converts Spotify show feeds into RSS.
 
 
-## How to Use
-
-Direct your RSS client to `https://rss.subtlesoftware.dev/spotify/id/$SHOW_ID`.
-
-TODO: Method to search for show ID.
-
-Example: [Joe Rogan](https://rss.subtlesoftware.dev/spotify/id/4rOoJ6Egrf8K2IrywzwOMk)
-
-
 ## Engineering
 
 ### Architecture
