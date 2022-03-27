@@ -14,9 +14,9 @@ pub struct Shows {
     pub href: String,
     pub items: Vec<Item>,
     pub limit: i64,
-    pub next: String,
+    pub next: Option<String>,
     pub offset: i64,
-    pub previous: Value,
+    pub previous: Option<String>,
     pub total: i64,
 }
 

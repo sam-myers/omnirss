@@ -2,6 +2,7 @@ use crate::cache::{Cache, RedisCache};
 use crate::search_query::SearchQuery;
 use crate::settings::Settings;
 use crate::spotify::{SpotifyClient, SpotifyService};
+use log::error;
 use rocket::{Route, State};
 use rocket_dyn_templates::Template;
 
@@ -19,9 +20,13 @@ async fn spotify_by_id(
     spotify_client: &State<SpotifyClient>,
     cache: &State<RedisCache>,
 ) -> Option<String> {
-    SpotifyService::show_feed(spotify_client.inner(), cache.inner(), show_id)
-        .await
-        .ok()
+    match SpotifyService::show_feed(spotify_client.inner(), cache.inner(), show_id).await {
+        Ok(result) => Some(result),
+        Err(e) => {
+            error!("Getting feed: {:?}", e);
+            None
+        }
+    }
 }
 
 #[get("/?<search>")]
@@ -32,9 +37,15 @@ async fn search(
     settings: &State<Settings>,
 ) -> Option<Template> {
     let context =
-        SpotifyService::search_show(spotify_client.inner(), cache.inner(), search, settings)
+        match SpotifyService::search_show(spotify_client.inner(), cache.inner(), search, settings)
             .await
-            .ok()?;
+        {
+            Ok(result) => Some(result),
+            Err(e) => {
+                error!("Searching for show: {:?}", e);
+                None
+            }
+        };
 
     Some(Template::render("search-results", &context))
 }
