@@ -81,18 +81,39 @@ impl SpotifyClient {
             .await?;
         Ok(resp)
     }
+
+    async fn _search_show(&self, query: &str) -> Result<Box<response::Search>> {
+        debug!("Searching Spotify for show {}", query);
+        let resp = reqwest::Client::new()
+            .get(format!("{}/search", BASE_URL))
+            .header("Authorization", self.get_bearer_auth_header().await?)
+            .query(&[("market", "US"), ("type", "show"), ("q", query)])
+            .send()
+            .await?
+            .json::<Box<response::Search>>()
+            .await?;
+        Ok(resp)
+    }
 }
 
 #[rocket::async_trait]
 impl Spotify for SpotifyClient {
-    async fn get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
+    async fn get_show(&self, show_id: &str) -> Result<Box<response::GetShow>> {
         self._get_shows(show_id).await
+    }
+
+    async fn search_show(&self, query: &str) -> Result<Box<response::Search>> {
+        self._search_show(query).await
     }
 }
 
 #[rocket::async_trait]
 impl<'a> Spotify for &'a SpotifyClient {
-    async fn get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
+    async fn get_show(&self, show_id: &str) -> Result<Box<response::GetShow>> {
         self._get_shows(show_id).await
+    }
+
+    async fn search_show(&self, query: &str) -> Result<Box<response::Search>> {
+        self._search_show(query).await
     }
 }

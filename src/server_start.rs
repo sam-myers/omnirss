@@ -26,6 +26,7 @@ pub async fn server_start() {
     rocket_builder
         .manage(redis_cache)
         .manage(spotify_client)
+        .manage(config)
         .mount("/", FileServer::from("public"))
         .mount("/", routes::routes())
         .attach(Template::fairing())

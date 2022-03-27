@@ -1,12 +1,11 @@
 use rocket::form::{Errors, FromFormField, ValueField};
-use std::borrow::Cow;
 
-pub struct SearchQuery<'a>(pub(crate) Cow<'a, str>);
+pub struct SearchQuery(pub(crate) String);
 
-impl<'a> FromFormField<'a> for SearchQuery<'a> {
-    fn from_value(field: ValueField<'a>) -> rocket::form::Result<'a, Self> {
+impl FromFormField<'_> for SearchQuery {
+    fn from_value(field: ValueField) -> rocket::form::Result<Self> {
         if field.name == "search" && !field.value.is_empty() {
-            return Ok(SearchQuery(Cow::from(field.value)));
+            return Ok(SearchQuery(field.value.to_string()));
         }
         Err(Errors::from(rocket::form::Error::validation(
             "doesn't contain search",

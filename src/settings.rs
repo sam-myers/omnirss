@@ -1,5 +1,7 @@
 #[derive(Debug, Deserialize)]
 pub struct Settings {
+    pub(crate) base_url: String,
+
     pub(crate) spotify_client_id: String,
     pub(crate) spotify_client_secret: String,
 
