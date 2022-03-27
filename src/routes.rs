@@ -20,8 +20,7 @@ async fn spotify_by_id(
     spotify_client: &State<SpotifyClient>,
     cache: &State<RedisCache>,
 ) -> Option<String> {
-    match SpotifyService::show_feed(spotify_client.inner(), cache.inner(), show_id)
-        .await {
+    match SpotifyService::show_feed(spotify_client.inner(), cache.inner(), show_id).await {
         Ok(result) => Some(result),
         Err(e) => {
             error!("Getting feed: {:?}", e);
@@ -39,7 +38,8 @@ async fn search(
 ) -> Option<Template> {
     let context =
         match SpotifyService::search_show(spotify_client.inner(), cache.inner(), search, settings)
-            .await {
+            .await
+        {
             Ok(result) => Some(result),
             Err(e) => {
                 error!("Searching for show: {:?}", e);
