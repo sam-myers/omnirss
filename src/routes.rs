@@ -23,6 +23,7 @@ async fn spotify_by_id(
     match SpotifyService::show_feed(spotify_client.inner(), cache.inner(), show_id).await {
         Ok(result) => Some(result),
         Err(e) => {
+            sentry::capture_error(&e);
             error!("Getting feed: {:?}", e);
             None
         }
@@ -42,6 +43,7 @@ async fn search(
         {
             Ok(result) => Some(result),
             Err(e) => {
+                sentry::capture_error(&e);
                 error!("Searching for show: {:?}", e);
                 None
             }

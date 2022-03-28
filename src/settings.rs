@@ -11,6 +11,7 @@ pub struct Settings {
 
     pub(crate) sentry_env: String,
     pub(crate) sentry_url: String,
+    pub(crate) sentry_sample_rate: f32,
 }
 
 impl Settings {

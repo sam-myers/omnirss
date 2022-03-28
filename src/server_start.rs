@@ -11,11 +11,12 @@ pub async fn server_start() {
     let settings: Settings = rocket_builder.figment().extract().expect("config");
 
     // Sentry
-    let _guard = sentry::init((
+    let _sentry = sentry::init((
         settings.sentry_url.clone(),
         sentry::ClientOptions {
             release: sentry::release_name!(),
             environment: Some(settings.sentry_env.clone().into()),
+            sample_rate: settings.sentry_sample_rate,
             ..Default::default()
         },
     ));

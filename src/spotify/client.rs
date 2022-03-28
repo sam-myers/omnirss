@@ -12,6 +12,7 @@ use crate::spotify::{response, Spotify};
 
 const BASE_URL: &str = "https://api.spotify.com/v1";
 
+#[derive(Debug)]
 pub struct SpotifyClient {
     credentials: SpotifyCredentials,
     token: Mutex<SpotifyToken>,
