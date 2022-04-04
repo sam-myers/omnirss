@@ -1,7 +1,5 @@
 #[macro_use]
 extern crate rocket;
-extern crate log;
-extern crate pretty_env_logger;
 extern crate redis;
 #[macro_use]
 extern crate serde_derive;

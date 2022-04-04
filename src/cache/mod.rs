@@ -9,6 +9,6 @@ use crate::error::Result;
 #[rocket::async_trait]
 pub trait Cache {
     async fn ping(&self) -> bool;
-    async fn get(&self, key: &String) -> Result<String>;
+    async fn get(&self, key: &String) -> Result<Option<String>>;
     async fn set(&self, key: &String, value: &String, ttl_seconds: usize) -> Result<()>;
 }

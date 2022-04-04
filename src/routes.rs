@@ -2,9 +2,9 @@ use crate::cache::{Cache, RedisCache};
 use crate::search_query::SearchQuery;
 use crate::settings::Settings;
 use crate::spotify::{SpotifyClient, SpotifyService};
-use log::error;
 use rocket::{Route, State};
 use rocket_dyn_templates::Template;
+use tracing::error;
 
 #[get("/health")]
 async fn health(redis_client: &State<RedisCache>) -> Option<&'static str> {

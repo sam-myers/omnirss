@@ -1,5 +1,5 @@
 use crate::cache::Cache;
-use crate::error::{OmniRssError, Result};
+use crate::error::Result;
 use chrono::prelude::*;
 use chrono::{Duration, Utc};
 use futures::lock::Mutex;
@@ -34,12 +34,12 @@ impl Cache for MemoryCache {
         true
     }
 
-    async fn get(&self, key: &String) -> Result<String> {
+    async fn get(&self, key: &String) -> Result<Option<String>> {
         let expire_cutoff: DateTime<Utc> = Utc::now().add(Duration::seconds(self.time_offset));
         let cache = self.cache.lock().await;
         match cache.get(key) {
-            Some((v, expire)) if *expire > expire_cutoff => Ok(v.clone()),
-            _ => Err(OmniRssError::InMemoryKeyNotFound),
+            Some((v, expire)) if *expire > expire_cutoff => Ok(Some(v.clone())),
+            _ => Ok(None),
         }
     }
 
@@ -67,7 +67,6 @@ impl Cache for MemoryCache {
 mod tests {
     use crate::cache::memory::MemoryCache;
     use crate::cache::Cache;
-    use crate::error::OmniRssError;
 
     #[tokio::test]
     async fn ping() {
@@ -78,10 +77,7 @@ mod tests {
     #[tokio::test]
     async fn get_nonexistent() {
         let mem_cache: MemoryCache = Default::default();
-        assert!(matches!(
-            mem_cache.get(&"foo".to_string()).await,
-            Err(OmniRssError::InMemoryKeyNotFound)
-        ));
+        assert!(matches!(mem_cache.get(&"foo".to_string()).await, Ok(None)));
     }
 
     #[tokio::test]
@@ -95,7 +91,7 @@ mod tests {
 
         let get_result = mem_cache.get(&key).await;
         assert!(matches!(get_result, Ok(_)));
-        assert_eq!(get_result.unwrap(), value);
+        assert_eq!(get_result.unwrap().unwrap(), value);
     }
 
     #[tokio::test]
@@ -107,9 +103,6 @@ mod tests {
         let _ = mem_cache.set(&key, &value, 10).await;
         mem_cache = mem_cache.time_travel(15);
 
-        assert!(matches!(
-            mem_cache.get(&key).await,
-            Err(OmniRssError::InMemoryKeyNotFound)
-        ));
+        assert!(matches!(mem_cache.get(&key).await, Ok(None)));
     }
 }
