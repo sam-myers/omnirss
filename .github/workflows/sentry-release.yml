@@ -18,3 +18,5 @@ jobs:
         SENTRY_PROJECT: omnirss
       with:
         environment: prod
+        set_commits: auto
+        version: ${{ github.sha }}
