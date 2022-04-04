@@ -47,6 +47,9 @@ pretty_env_logger = "0.4"
 # Redis
 redis = { version = "0.21.5", default-features = false, features = ["tokio-comp", "tokio-native-tls-comp"] }
 
+# Sentry
+sentry = "0.25.0"
+
 [dependencies.rocket_dyn_templates]
 version = "0.1.0-rc.1"
 features = ["tera"]

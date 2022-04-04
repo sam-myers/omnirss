@@ -12,14 +12,15 @@ use crate::spotify::{response, Spotify};
 
 const BASE_URL: &str = "https://api.spotify.com/v1";
 
+#[derive(Debug)]
 pub struct SpotifyClient {
     credentials: SpotifyCredentials,
     token: Mutex<SpotifyToken>,
 }
 
 impl SpotifyClient {
-    pub async fn from_config(config: &Settings) -> Result<Self> {
-        let credentials = SpotifyCredentials::from_config(config)?;
+    pub async fn from_settings(settings: &Settings) -> Result<Self> {
+        let credentials = SpotifyCredentials::from_settings(settings)?;
         let resp = Self::request_token(&credentials).await?;
 
         Ok(Self {

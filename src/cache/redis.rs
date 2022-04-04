@@ -3,13 +3,14 @@ use crate::error::{OmniRssError, Result};
 use crate::settings::Settings;
 use redis::AsyncCommands;
 
+#[derive(Debug, Clone)]
 pub struct RedisCache(redis::Client);
 
 impl RedisCache {
-    pub fn from_settings(config: &Settings) -> Result<Self> {
+    pub fn from_settings(settings: &Settings) -> Result<Self> {
         info!("Starting Redis client");
         Ok(Self(redis::Client::open(
-            config.redis_connection_url().unwrap(),
+            settings.redis_connection_url().unwrap(),
         )?))
     }
 }
@@ -19,6 +20,7 @@ impl Cache for &RedisCache {
     async fn ping(&self) -> bool {
         let con = self.0.get_async_connection().await;
         if let Err(e) = con {
+            sentry::capture_error(&e);
             warn!("Ping to Redis failed: trying to create connection: {}", e);
             return false;
         }
@@ -29,6 +31,7 @@ impl Cache for &RedisCache {
             .query_async::<redis::aio::Connection, ()>(&mut con)
             .await
         {
+            sentry::capture_error(&e);
             warn!("Ping to Redis failed: ping command: {}", e);
             return false;
         }

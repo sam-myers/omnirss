@@ -1,5 +1,6 @@
 use rocket::form::{Errors, FromFormField, ValueField};
 
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SearchQuery(pub(crate) String);
 
 impl FromFormField<'_> for SearchQuery {
