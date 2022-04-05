@@ -12,6 +12,13 @@ pub async fn server_start() {
     tracing_subscriber::registry()
         .with(tracing_subscriber::fmt::layer())
         .with(
+            tracing_subscriber::EnvFilter::from_env("ROCKET_LOG_LEVEL")
+                .add_directive("hyper=off".parse().expect("trace directive syntax"))
+                .add_directive("reqwest=error".parse().expect("trace directive syntax"))
+                .add_directive("rocket=error".parse().expect("trace directive syntax"))
+                .add_directive("_=error".parse().expect("trace directive syntax")),
+        )
+        .with(
             sentry_tracing::layer().event_filter(|md| match *md.level() {
                 tracing::Level::ERROR => EventFilter::Event,
                 tracing::Level::WARN => EventFilter::Event,

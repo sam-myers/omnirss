@@ -32,7 +32,7 @@ impl SpotifyClient {
         })
     }
 
-    #[instrument]
+    #[instrument(skip(credentials))]
     async fn request_token(credentials: &SpotifyCredentials) -> Result<response::GetToken> {
         debug!("Spotify client getting access token");
 
@@ -47,7 +47,7 @@ impl SpotifyClient {
         Ok(resp)
     }
 
-    #[instrument]
+    #[instrument(skip(self))]
     async fn refresh_token_if_needed(&self) -> Result<()> {
         let mut current_token: MutexGuard<SpotifyToken> = self.token.lock().await;
         if current_token
@@ -71,9 +71,9 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
-    #[instrument]
+    #[instrument(skip(self))]
     async fn _get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
-        debug!("Getting Spotify show id {}", show_id);
+        debug!("Getting Spotify show");
         let resp = reqwest::Client::new()
             .get(format!("{}/shows/{}", BASE_URL, show_id))
             .header("Authorization", self.get_bearer_auth_header().await?)
@@ -85,9 +85,9 @@ impl SpotifyClient {
         Ok(resp)
     }
 
-    #[instrument]
+    #[instrument(skip(self))]
     async fn _search_show(&self, query: &str) -> Result<Box<response::Search>> {
-        debug!("Searching Spotify for show {}", query);
+        debug!("Searching Spotify for show");
         let resp = reqwest::Client::new()
             .get(format!("{}/search", BASE_URL))
             .header("Authorization", self.get_bearer_auth_header().await?)
