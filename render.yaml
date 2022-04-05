@@ -1,0 +1,17 @@
+services:
+  - name: omnirss
+    env: rust
+    type: web
+
+    plan: starter
+    numInstances: 1
+
+    autoDeploy: true
+    pullRequestPreviewsEnabled: true
+
+    healthCheckPath: /health
+    buildCommand: cargo build --release
+    startCommand: cargo run --release
+
+    domains:
+      - omnirss.com
