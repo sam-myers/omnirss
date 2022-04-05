@@ -1,11 +1,25 @@
 use crate::cache::{Cache, RedisCache};
 use crate::{routes, settings::Settings, spotify};
-use log::info;
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
+use sentry_tracing::EventFilter;
+use tracing::info;
+use tracing_subscriber::prelude::*;
 
 #[allow(unused_must_use)]
 pub async fn server_start() {
+    // Tracing
+    tracing_subscriber::registry()
+        .with(tracing_subscriber::fmt::layer())
+        .with(
+            sentry_tracing::layer().event_filter(|md| match *md.level() {
+                tracing::Level::ERROR => EventFilter::Event,
+                tracing::Level::WARN => EventFilter::Event,
+                _ => EventFilter::Ignore,
+            }),
+        )
+        .init();
+
     // Config
     let rocket_builder = rocket::build();
     let settings: Settings = rocket_builder.figment().extract().expect("config");
@@ -16,6 +30,7 @@ pub async fn server_start() {
         sentry::ClientOptions {
             release: sentry::release_name!(),
             environment: Some(settings.sentry_env.clone().into()),
+            traces_sample_rate: settings.sentry_sample_rate,
             sample_rate: settings.sentry_sample_rate,
             ..Default::default()
         },

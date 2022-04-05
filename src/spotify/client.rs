@@ -1,8 +1,8 @@
 use chrono::prelude::*;
 use chrono::Duration;
 use futures::lock::{Mutex, MutexGuard};
-use log::{debug, trace};
 use std::ops::Add;
+use tracing::{debug, instrument};
 
 use crate::error::*;
 use crate::settings::Settings;
@@ -32,6 +32,7 @@ impl SpotifyClient {
         })
     }
 
+    #[instrument]
     async fn request_token(credentials: &SpotifyCredentials) -> Result<response::GetToken> {
         debug!("Spotify client getting access token");
 
@@ -43,10 +44,10 @@ impl SpotifyClient {
             .await?
             .json::<response::GetToken>()
             .await?;
-        trace!("Token response {:?}", resp);
         Ok(resp)
     }
 
+    #[instrument]
     async fn refresh_token_if_needed(&self) -> Result<()> {
         let mut current_token: MutexGuard<SpotifyToken> = self.token.lock().await;
         if current_token
@@ -70,6 +71,7 @@ impl SpotifyClient {
         Ok(self.token.lock().await.bearer_auth_header())
     }
 
+    #[instrument]
     async fn _get_shows(&self, show_id: &str) -> Result<Box<response::GetShow>> {
         debug!("Getting Spotify show id {}", show_id);
         let resp = reqwest::Client::new()
@@ -83,6 +85,7 @@ impl SpotifyClient {
         Ok(resp)
     }
 
+    #[instrument]
     async fn _search_show(&self, query: &str) -> Result<Box<response::Search>> {
         debug!("Searching Spotify for show {}", query);
         let resp = reqwest::Client::new()

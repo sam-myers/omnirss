@@ -1,5 +1,5 @@
-use log::debug;
 use rss::{ChannelBuilder, Item};
+use tracing::{debug, instrument};
 
 use crate::cache::Cache;
 use crate::error::*;
@@ -24,6 +24,7 @@ impl SpotifyService {
             .to_string())
     }
 
+    #[instrument(skip(spotify_client, cache), err)]
     pub async fn show_feed(
         spotify_client: impl Spotify,
         cache: impl Cache,
@@ -32,9 +33,13 @@ impl SpotifyService {
         // Cached show available?
         debug!("Checking cache...");
         let cache_key = CacheKey::show(&show_id);
-        if let Ok(show) = cache.get(&cache_key).await {
-            debug!("Using cached feed");
-            return Ok(show);
+        match cache.get(&cache_key).await {
+            Err(e) => return Err(e),
+            Ok(Some(c)) => {
+                debug!("Using cached feed");
+                return Ok(c);
+            }
+            Ok(None) => {}
         }
 
         // Get from API
@@ -96,6 +101,7 @@ impl SpotifyService {
         Ok(channel_string)
     }
 
+    #[instrument(skip(spotify_client, cache), err)]
     pub async fn search_show(
         spotify_client: impl Spotify,
         cache: impl Cache,
@@ -104,14 +110,18 @@ impl SpotifyService {
     ) -> Result<SearchResults> {
         debug!("Checking cache...");
         let cache_key = CacheKey::search(&query.0);
-        if let Ok(raw_search) = cache.get(&cache_key).await {
-            debug!("Using cached search");
-            let search: Search = serde_json::from_str(&raw_search)?;
-            return Ok(Self::spotify_search_to_results(
-                search,
-                query.0.clone(),
-                settings,
-            ));
+        match cache.get(&cache_key).await {
+            Err(e) => return Err(e),
+            Ok(Some(raw_search)) => {
+                debug!("Using cached search");
+                let search: Search = serde_json::from_str(&raw_search)?;
+                return Ok(Self::spotify_search_to_results(
+                    search,
+                    query.0.clone(),
+                    settings,
+                ));
+            }
+            Ok(None) => {}
         }
 
         debug!("Searching Spotify API...");

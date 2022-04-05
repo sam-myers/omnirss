@@ -2,6 +2,7 @@ use crate::cache::Cache;
 use crate::error::{OmniRssError, Result};
 use crate::settings::Settings;
 use redis::AsyncCommands;
+use tracing::{error, instrument};
 
 #[derive(Debug, Clone)]
 pub struct RedisCache(redis::Client);
@@ -38,11 +39,19 @@ impl Cache for &RedisCache {
         true
     }
 
-    async fn get(&self, key: &String) -> Result<String> {
+    #[instrument]
+    async fn get(&self, key: &String) -> Result<Option<String>> {
         let mut con = self.0.get_async_connection().await?;
-        con.get(key).await.map_err(OmniRssError::RedisError)
+        match con.get(key).await {
+            Ok(s) => Ok(s),
+            Err(e) => {
+                error!("Redis Error: {:?}", e);
+                return Err(OmniRssError::RedisError(e));
+            }
+        }
     }
 
+    #[instrument(err)]
     async fn set(&self, key: &String, value: &String, ttl_seconds: usize) -> Result<()> {
         let mut con = self.0.get_async_connection().await?;
         con.set_ex::<&String, &String, ()>(key, value, ttl_seconds)
