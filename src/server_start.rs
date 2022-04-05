@@ -11,6 +11,7 @@ pub async fn server_start() {
     // Tracing
     tracing_subscriber::registry()
         .with(tracing_subscriber::fmt::layer())
+        .with(tracing_subscriber::EnvFilter::from_env("ROCKET_LOG_LEVEL"))
         .with(
             sentry_tracing::layer().event_filter(|md| match *md.level() {
                 tracing::Level::ERROR => EventFilter::Event,
