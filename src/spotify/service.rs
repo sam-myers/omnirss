@@ -31,7 +31,7 @@ impl SpotifyService {
         show_id: String,
     ) -> Result<String> {
         // Cached show available?
-        debug!("Checking cache...");
+        debug!("Checking cache");
         let cache_key = CacheKey::show(&show_id);
         match cache.get(&cache_key).await {
             Err(e) => return Err(e),
@@ -43,7 +43,7 @@ impl SpotifyService {
         }
 
         // Get from API
-        debug!("Getting show from Spotify API...");
+        debug!("Getting show from Spotify API");
         let show = spotify_client.get_show(&show_id).await?;
 
         let title = show.name.clone();
@@ -89,7 +89,7 @@ impl SpotifyService {
             .build();
 
         // Save to Redis
-        debug!("Saving to cache...");
+        debug!("Saving to cache");
         let channel_string: String = channel.to_string();
         if let Err(e) = cache
             .set(&cache_key, &channel_string, CACHE_SHOW_FOR_SECONDS)
@@ -101,14 +101,14 @@ impl SpotifyService {
         Ok(channel_string)
     }
 
-    #[instrument(skip(spotify_client, cache), err)]
+    #[instrument(skip(spotify_client, cache, settings), err)]
     pub async fn search_show(
         spotify_client: impl Spotify,
         cache: impl Cache,
         query: SearchQuery,
         settings: &Settings,
     ) -> Result<SearchResults> {
-        debug!("Checking cache...");
+        debug!("Checking cache");
         let cache_key = CacheKey::search(&query.0);
         match cache.get(&cache_key).await {
             Err(e) => return Err(e),
@@ -124,10 +124,10 @@ impl SpotifyService {
             Ok(None) => {}
         }
 
-        debug!("Searching Spotify API...");
+        debug!("Searching Spotify API");
         let spotify_search = spotify_client.search_show(&query.0).await?;
 
-        debug!("Saving to cache...");
+        debug!("Saving to cache");
         let cache_value = serde_json::to_string(&spotify_search)?;
         if let Err(e) = cache
             .set(&cache_key, &cache_value, CACHE_SEARCH_FOR_SECONDS)
