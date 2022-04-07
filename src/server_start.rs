@@ -19,12 +19,10 @@ pub async fn server_start() {
                 .add_directive("_=error".parse().expect("trace directive syntax")),
         )
         .with(
-            sentry_tracing::layer().event_filter(|md| match *md.level() {
-                tracing::Level::ERROR => EventFilter::Event,
-                _ => EventFilter::Ignore,
-            }).event_filter(|md| match md.module_path() {
-                Some("rocket::server") => EventFilter::Ignore,
-                _ => EventFilter::Event,
+            sentry_tracing::layer().event_filter(|md| match (*md.level(), md.module_path()) {
+                (tracing::Level::ERROR, Some("rocket::server")) => EventFilter::Ignore,
+                (tracing::Level::ERROR, _) => EventFilter::Event,
+                (_, _) => EventFilter::Ignore,
             }),
         )
         .init();
