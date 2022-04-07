@@ -21,8 +21,10 @@ pub async fn server_start() {
         .with(
             sentry_tracing::layer().event_filter(|md| match *md.level() {
                 tracing::Level::ERROR => EventFilter::Event,
-                tracing::Level::WARN => EventFilter::Event,
                 _ => EventFilter::Ignore,
+            }).event_filter(|md| match md.module_path() {
+                Some("rocket::server") => EventFilter::Ignore,
+                _ => EventFilter::Event,
             }),
         )
         .init();
