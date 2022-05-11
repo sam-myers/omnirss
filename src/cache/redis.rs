@@ -21,7 +21,6 @@ impl Cache for &RedisCache {
     async fn ping(&self) -> bool {
         let con = self.0.get_async_connection().await;
         if let Err(e) = con {
-            sentry::capture_error(&e);
             warn!("Ping to Redis failed: trying to create connection: {}", e);
             return false;
         }
@@ -32,7 +31,6 @@ impl Cache for &RedisCache {
             .query_async::<redis::aio::Connection, ()>(&mut con)
             .await
         {
-            sentry::capture_error(&e);
             warn!("Ping to Redis failed: ping command: {}", e);
             return false;
         }
