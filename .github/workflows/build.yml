@@ -37,4 +37,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: registry.digitalocean.com/subtlesoftware/omnirss:${TAG}
+          tags: registry.digitalocean.com/subtlesoftware/omnirss:${{ env.TAG }}
