@@ -1,14 +1,7 @@
 FROM rust:1 as builder
 
-RUN USER=root cargo new --bin omnirss
 WORKDIR ./omnirss
-COPY ./Cargo.toml ./Cargo.toml
-RUN cargo build --release
-RUN rm src/*.rs
-
-ADD . ./
-
-RUN rm ./target/release/deps/rust_docker_web*
+COPY . ./
 RUN cargo build --release
 
 
