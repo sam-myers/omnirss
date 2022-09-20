@@ -2,7 +2,7 @@ use crate::error::*;
 use crate::settings::Settings;
 use base64::encode;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct ClientKey(String);
 
 impl ClientKey {
@@ -17,7 +17,7 @@ impl ClientKey {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct SpotifyCredentials {
     client_id: ClientKey,
     client_secret: ClientKey,
