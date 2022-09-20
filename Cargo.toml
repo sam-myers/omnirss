@@ -43,7 +43,7 @@ base64 = "0.13.0"
 # Logging
 tracing = "0.1.35"
 tracing-appender = "0.2.2"
-tracing-subscriber = {version="0.3.10", features=["env-filter", "json", "registry", "smallvec"]}
+tracing-subscriber = {version="0.3.15", features=["env-filter", "json", "registry", "smallvec"]}
 
 # Redis
 redis = { version = "0.21.6", default-features = false, features = ["tokio-comp", "tokio-native-tls-comp"] }
