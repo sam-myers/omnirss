@@ -19,10 +19,12 @@ jobs:
       - name: Install Netlify CLI
         run: npm install netlify-cli --save-dev
 
+      - name: Set up Netlify CLI
+        run: netlify init
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: netlify init
           start: doppler run -- netlify dev
           record: true
         env:
