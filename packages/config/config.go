@@ -5,11 +5,12 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"golang.org/x/oauth2/clientcredentials"
+	"os"
 )
 
 type Config struct {
 	// Server
-	BaseUrl string `env:"DEPLOY_PRIME_URL"`
+	BaseUrl string
 
 	// Airtable
 	SpotifyId     string `yaml:"spotify_id"     env:"SPOTIFY_ID"`
@@ -24,6 +25,17 @@ func NewConfigFromEnv() (*Config, error) {
 	err := cleanenv.ReadEnv(config)
 	if err != nil {
 		return nil, err
+	}
+
+	switch context := os.Getenv("CONTEXT"); context {
+	case "production":
+		config.BaseUrl = os.Getenv("URL")
+	case "deploy-preview", "branch-deploy":
+		config.BaseUrl = os.Getenv("DEPLOY_URL")
+	case "dev":
+		config.BaseUrl = "http://localhost:8888"
+	default:
+		return nil, fmt.Errorf("unknown context: %s", context)
 	}
 
 	if err := config.requiredVarsSet(); err != nil {
