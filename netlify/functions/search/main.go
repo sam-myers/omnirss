@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"github.com/aws/aws-lambda-go/lambda"
 	omnirssconfig "github.com/sam-myers/omnirss/packages/config"
 	"github.com/sirupsen/logrus"
@@ -14,6 +15,9 @@ var config *omnirssconfig.Config
 var log *logrus.Logger
 var spotifyClient *spotify.Client
 var htmlTemplate *template.Template
+
+//go:embed template.html
+var textTemplate string
 
 func main() {
 	var err error
@@ -35,7 +39,7 @@ func main() {
 	}
 
 	// Load Template
-	htmlTemplate, err = template.ParseFiles("template.html")
+	htmlTemplate, err = template.New("template.html").Parse(textTemplate)
 	if err != nil {
 		log.WithError(err).Fatal("Failed to load template")
 	}
