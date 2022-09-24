@@ -24,6 +24,9 @@ func main() {
 
 	// Config
 	config, err = omnirssconfig.NewConfigFromEnv()
+	if err != nil {
+		panic(err)
+	}
 
 	// Init logging
 	log = logrus.New()
@@ -32,10 +35,6 @@ func main() {
 		log.SetLevel(logrus.DebugLevel)
 	} else {
 		log.SetLevel(logrus.InfoLevel)
-	}
-
-	if err != nil {
-		log.WithError(err).Fatal("Failed to read config")
 	}
 
 	// Load Template
