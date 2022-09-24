@@ -16,11 +16,13 @@ jobs:
         env:
           DOPPLER_SERVICE_TOKEN: ${{ secrets.DOPPLER_SERVICE_TOKEN }}
 
+      - name: Install Netlify CLI
+        run: npm install netlify-cli --save-dev
+
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          build: cargo build
-          start: doppler run -- cargo run
+          start: doppler run -- netlify dev
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}

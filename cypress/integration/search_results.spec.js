@@ -1,6 +1,6 @@
 describe('Search Results', () => {
     beforeEach(() => {
-        cy.visit('/?search=Joe+Rogan');
+        cy.visit('/.netlify/functions/search?query=Joe+Rogan');
     })
 
     it('Copy to clipboard', () => {
@@ -12,6 +12,6 @@ describe('Search Results', () => {
         cy.window()
             .its('navigator.clipboard')
             .invoke('readText')
-            .should('contain', '/spotify/id/4rOoJ6Egrf8K2IrywzwOMk');;
+            .should('contain', '/.netlify/functions/spotify-rss?id=4rOoJ6Egrf8K2IrywzwOMk');
     })
 })
