@@ -1,27 +1,33 @@
-name: Cypress
-
-on: [push]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install Doppler
-        run: |
-          (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh
-          echo "${DOPPLER_SERVICE_TOKEN}" | doppler configure set token --scope /
-        env:
-          DOPPLER_SERVICE_TOKEN: ${{ secrets.DOPPLER_SERVICE_TOKEN }}
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
-        with:
-          build: cargo build
-          start: doppler run -- cargo run
-          record: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#name: Cypress
+#
+#on: [push]
+#
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    env:
+#      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+#      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+#
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#
+#      - name: Install Doppler
+#        run: |
+#          (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sudo sh
+#          echo "${DOPPLER_SERVICE_TOKEN}" | doppler configure set token --scope /
+#        env:
+#          DOPPLER_SERVICE_TOKEN: ${{ secrets.DOPPLER_SERVICE_TOKEN }}
+#
+#      - name: Install Netlify CLI
+#        run: npm install netlify-cli --save-dev
+#
+#      - name: Cypress run
+#        uses: cypress-io/github-action@v2
+#        with:
+#          start: doppler run -- netlify dev
+#          record: true
+#        env:
+#          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
