@@ -8,4 +8,4 @@ directory = "netlify/functions"
 
 [[redirects]]
 from = "/spotify/id/*"
-to = "/netlify/functions/spotify-rss?id=:splat"
+to = "/.netlify/functions/spotify-rss?id=:splat"
