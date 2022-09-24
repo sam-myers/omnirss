@@ -3,20 +3,23 @@ package main
 import (
 	"context"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/ilyakaznacheev/cleanenv"
+	omnirssconfig "github.com/sam-myers/omnirss/packages/config"
 	"github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"html/template"
 )
 
+var config *omnirssconfig.Config
 var log *logrus.Logger
 var spotifyClient *spotify.Client
 var htmlTemplate *template.Template
 
 func main() {
+	var err error
+
 	// Config
-	err := cleanenv.ReadEnv(&config)
+	config, err = omnirssconfig.NewConfigFromEnv()
 
 	// Init logging
 	log = logrus.New()
@@ -29,11 +32,6 @@ func main() {
 
 	if err != nil {
 		log.WithError(err).Fatal("Failed to read config")
-	}
-
-	err = config.RequiredVarsSet()
-	if err != nil {
-		log.WithError(err).Fatal("Required config vars not set")
 	}
 
 	// Load Template

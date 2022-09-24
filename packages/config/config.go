@@ -1,7 +1,8 @@
-package main
+package config
 
 import (
-	"github.com/pkg/errors"
+	"fmt"
+	"github.com/ilyakaznacheev/cleanenv"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"golang.org/x/oauth2/clientcredentials"
 )
@@ -18,6 +19,20 @@ type Config struct {
 	Debug bool `yaml:"debug" env:"DEBUG" env-default:"false"`
 }
 
+func NewConfigFromEnv() (*Config, error) {
+	config := &Config{}
+	err := cleanenv.ReadEnv(config)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := config.requiredVarsSet(); err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
+
 func (c *Config) ClientCredentials() *clientcredentials.Config {
 	return &clientcredentials.Config{
 		ClientID:     c.SpotifyId,
@@ -26,19 +41,17 @@ func (c *Config) ClientCredentials() *clientcredentials.Config {
 	}
 }
 
-var config Config
-
-func (c *Config) RequiredVarsSet() error {
+func (c *Config) requiredVarsSet() error {
 	if c.SpotifyId == "" {
-		return errors.New("SPOTIFY_ID is required")
+		return fmt.Errorf("SPOTIFY_ID is required")
 	}
 
 	if c.SpotifySecret == "" {
-		return errors.New("SPOTIFY_SECRET is required")
+		return fmt.Errorf("SPOTIFY_SECRET is required")
 	}
 
 	if c.BaseUrl == "" {
-		return errors.New("BASE_URL is required")
+		return fmt.Errorf("BASE_URL is required")
 	}
 
 	return nil

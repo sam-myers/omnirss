@@ -44,7 +44,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 			Name:        show.Name,
 			Description: show.Description,
 			ImageUrl:    imageUrl,
-			RssUrl:      fmt.Sprintf("%s/spotify/id/%s", config.BaseUrl, show.ID),
+			RssUrl:      fmt.Sprintf("%s/netlify/functions/spotify-rss?id=%s", config.BaseUrl, show.ID),
 		})
 	}
 

@@ -5,3 +5,7 @@ command = "echo 'Build complete'"
 
 [functions]
 directory = "netlify/functions"
+
+[[redirects]]
+from = "/spotify/id/*"
+to = "/netlify/functions/spotify-rss?id=:splat"
