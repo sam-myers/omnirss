@@ -10,7 +10,7 @@ import (
 func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*events.APIGatewayProxyResponse, error) {
 	log.WithField("request", request).Debug("Received request")
 
-	query := request.QueryStringParameters["q"]
+	query := request.QueryStringParameters["query"]
 	if query == "" {
 		log.Warn("Query is empty. Returning validation error")
 		return responseValidationError()
@@ -48,7 +48,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 		})
 	}
 
-	log.WithField("response", response).Info("Search results")
+	log.WithField("response", response).Debug("Search results")
 
 	return response.ToHttp()
 }

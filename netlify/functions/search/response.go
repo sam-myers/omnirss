@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"bytes"
 	"github.com/aws/aws-lambda-go/events"
 )
 
@@ -18,26 +18,29 @@ type SearchResult struct {
 }
 
 func (r *Response) ToHttp() (*events.APIGatewayProxyResponse, error) {
-	bytes, err := json.Marshal(r)
-	if err != nil {
+	var buff bytes.Buffer
+	if err := htmlTemplate.Execute(&buff, r); err != nil {
 		return responseInternalError(err)
 	}
-
-	return makeHttpResponse(200, string(bytes), nil)
+	return &events.APIGatewayProxyResponse{
+		StatusCode: 200,
+		Headers:    map[string]string{"Content-Type": "text/html"},
+		Body:       buff.String(),
+	}, nil
 }
 
 func responseValidationError() (*events.APIGatewayProxyResponse, error) {
-	return makeHttpResponse(400, "{}", nil)
+	return &events.APIGatewayProxyResponse{
+		StatusCode: 400,
+		Headers:    map[string]string{"Content-Type": "text/json"},
+		Body:       "",
+	}, nil
 }
 
 func responseInternalError(err error) (*events.APIGatewayProxyResponse, error) {
-	return makeHttpResponse(500, "{}", err)
-}
-
-func makeHttpResponse(code int, body string, err error) (*events.APIGatewayProxyResponse, error) {
 	return &events.APIGatewayProxyResponse{
-		StatusCode: code,
+		StatusCode: 500,
 		Headers:    map[string]string{"Content-Type": "text/json"},
-		Body:       body,
-	}, err
+		Body:       "",
+	}, nil
 }

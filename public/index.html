@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>OmniRSS - Spotify to RSS</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
-    <link rel="stylesheet" href="assets/css/Projects-Horizontal.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="/assets/css/Projects-Horizontal.css">
 </head>
 
 <body>
@@ -24,10 +24,14 @@
                     <h1 class="mb-5">Turn Spotify Podcasts Into RSS</h1>
                 </div>
                 <div class="col-md-10 col-lg-8 col-xl-7 mx-auto position-relative">
-                    <form>
+                    <form action="/.netlify/functions/search" method="GET">
                         <div class="row">
-                            <div class="col-12 col-md-9 mb-2 mb-md-0"><input class="form-control form-control-lg" type="text" placeholder="Show name..." name="search" required="" minlength="1"></div>
-                            <div class="col-12 col-md-3"><button class="btn btn-primary btn-lg" type="submit">Search</button></div>
+                            <div class="col-12 col-md-9 mb-2 mb-md-0">
+                                <input class="form-control form-control-lg" type="text" placeholder="Show name..." name="query" required="" minlength="1">
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <button class="btn btn-primary btn-lg" type="submit">Search</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -84,12 +88,6 @@
             <div class="row">
                 <div class="col-lg-6 text-center text-lg-start my-auto h-100">
                     <p class="text-muted small mb-4 mb-lg-0">© Subtle Software LLC 2022. All Rights Reserved. Proudly made in the USA. 🇺🇸</p>
-                </div>
-                <div class="col-lg-6 text-center text-lg-end my-auto h-100">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#"></a></li>
-                        <li class="list-inline-item"><a href="#"></a></li>
-                    </ul>
                 </div>
             </div>
         </div>

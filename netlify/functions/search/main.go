@@ -7,10 +7,12 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
+	"html/template"
 )
 
 var log *logrus.Logger
 var spotifyClient *spotify.Client
+var htmlTemplate *template.Template
 
 func main() {
 	// Config
@@ -32,6 +34,12 @@ func main() {
 	err = config.RequiredVarsSet()
 	if err != nil {
 		log.WithError(err).Fatal("Required config vars not set")
+	}
+
+	// Load Template
+	htmlTemplate, err = template.ParseFiles("template.html")
+	if err != nil {
+		log.WithError(err).Fatal("Failed to load template")
 	}
 
 	// Init Spotify
