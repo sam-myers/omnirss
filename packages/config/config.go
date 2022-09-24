@@ -9,7 +9,7 @@ import (
 
 type Config struct {
 	// Server
-	BaseUrl string `env:"BASE_URL"`
+	BaseUrl string `env:"DEPLOY_PRIME_URL"`
 
 	// Airtable
 	SpotifyId     string `yaml:"spotify_id"     env:"SPOTIFY_ID"`
