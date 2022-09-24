@@ -5,6 +5,10 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -18,9 +22,6 @@ jobs:
 
       - name: Install Netlify CLI
         run: npm install netlify-cli --save-dev
-
-      - name: Set up Netlify CLI
-        run: netlify init
 
       - name: Cypress run
         uses: cypress-io/github-action@v2
