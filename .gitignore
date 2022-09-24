@@ -2,3 +2,6 @@
 /node_modules
 /target
 Rocket.toml
+
+# Local Netlify folder
+.netlify

@@ -1,0 +1,7 @@
+[build]
+base = "/"
+publish = "public/"
+command = "echo 'Build complete'"
+
+[functions]
+directory = "netlify/functions"
