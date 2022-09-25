@@ -9,6 +9,7 @@ import (
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"html/template"
+	"os"
 )
 
 var config *omnirssconfig.Config
@@ -28,7 +29,7 @@ func main() {
 	// Config
 	config, err = omnirssconfig.NewConfigFromEnv()
 	if err != nil {
-		panic(err)
+		log.WithError(err).WithField("env", os.Environ()).Fatal("Failed to load config")
 	}
 
 	// Configure logging
