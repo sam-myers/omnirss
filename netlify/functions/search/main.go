@@ -20,6 +20,9 @@ var htmlTemplate *template.Template
 var textTemplate string
 
 func main() {
+	// Init logging
+	log = logrus.New()
+	log.Formatter = &logrus.TextFormatter{}
 	var err error
 
 	// Config
@@ -28,9 +31,7 @@ func main() {
 		panic(err)
 	}
 
-	// Init logging
-	log = logrus.New()
-	log.Formatter = &logrus.TextFormatter{}
+	// Configure logging
 	if config.Debug {
 		log.SetLevel(logrus.DebugLevel)
 	} else {
