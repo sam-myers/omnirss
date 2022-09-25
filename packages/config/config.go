@@ -63,7 +63,7 @@ func (c *Config) requiredVarsSet() error {
 	}
 
 	if c.BaseUrl == "" {
-		return fmt.Errorf("DEPLOY_PRIME_URL is required")
+		return fmt.Errorf("base URL is required")
 	}
 
 	return nil
