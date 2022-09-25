@@ -5,7 +5,6 @@ import (
 	"github.com/ilyakaznacheev/cleanenv"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
 	"golang.org/x/oauth2/clientcredentials"
-	"os"
 )
 
 type Config struct {
@@ -27,16 +26,16 @@ func NewConfigFromEnv() (*Config, error) {
 		return nil, err
 	}
 
-	switch context := os.Getenv("CONTEXT"); context {
-	case "production":
-		config.BaseUrl = os.Getenv("URL")
-	case "deploy-preview", "branch-deploy":
-		config.BaseUrl = os.Getenv("DEPLOY_URL")
-	case "dev":
-		config.BaseUrl = "http://localhost:8888"
-	default:
-		return nil, fmt.Errorf("unknown context: %s", context)
-	}
+	//switch context := os.Getenv("CONTEXT"); context {
+	//case "production":
+	//	config.BaseUrl = os.Getenv("URL")
+	//case "deploy-preview", "branch-deploy":
+	//	config.BaseUrl = os.Getenv("DEPLOY_URL")
+	//case "dev":
+	//	config.BaseUrl = "http://localhost:8888"
+	//default:
+	//	return nil, fmt.Errorf("unknown context: %s", context)
+	//}
 
 	if err := config.requiredVarsSet(); err != nil {
 		return nil, err
