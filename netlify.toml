@@ -16,3 +16,5 @@ to = "/.netlify/functions/spotify-rss?id=:splat"
 
 [[plugins]]
 package = "netlify-plugin-cypress"
+[plugins.inputs]
+browser = "electron"
