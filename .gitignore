@@ -1,6 +1,7 @@
 /.idea
 node_modules
 /target
+dist
 Rocket.toml
 
 # Local Netlify folder
