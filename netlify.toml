@@ -3,9 +3,19 @@ base = "/"
 publish = "public/"
 command = "echo 'Build complete'"
 
+[build.environment]
+CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
+TERM = "xterm"
+
 [functions]
 directory = "netlify/functions"
 
 [[redirects]]
 from = "/spotify/id/*"
 to = "/.netlify/functions/spotify-rss?id=:splat"
+
+[[plugins]]
+package = "netlify-plugin-cypress"
+[plugins.inputs]
+browser = "electron"
+record = true
