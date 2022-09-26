@@ -18,3 +18,4 @@ to = "/.netlify/functions/spotify-rss?id=:splat"
 package = "netlify-plugin-cypress"
 [plugins.inputs]
 browser = "electron"
+record = true
