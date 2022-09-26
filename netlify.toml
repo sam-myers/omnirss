@@ -8,7 +8,10 @@ CYPRESS_CACHE_FOLDER = "./node_modules/CypressBinary"
 TERM = "xterm"
 
 [functions]
-directory = "netlify/functions"
+directory = "functions"
+
+[context.dev]
+environment = { NODE_ENV = "development", BASE_URL = "http://localhost:8888" }
 
 [[redirects]]
 from = "/spotify/id/*"

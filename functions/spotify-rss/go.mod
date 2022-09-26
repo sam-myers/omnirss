@@ -4,10 +4,12 @@ go 1.19
 
 require (
 	github.com/aws/aws-lambda-go v1.34.1
-	github.com/sam-myers/omnirss/packages/config v0.0.0
+	github.com/sam-myers/omnirss/config v0.0.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/zmb3/spotify/v2 v2.3.0
 )
+
+replace github.com/sam-myers/omnirss/config v0.0.0 => ../packages/config
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
@@ -23,5 +25,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3 // indirect
 )
-
-replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ../../../packages/config

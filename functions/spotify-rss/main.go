@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/aws/aws-lambda-go/lambda"
-	omnirssconfig "github.com/sam-myers/omnirss/packages/config"
+	omnirssconfig "github.com/sam-myers/omnirss/config"
 	"github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
