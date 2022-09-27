@@ -3,14 +3,12 @@
   import { faGithub } from '@fortawesome/free-brands-svg-icons';
   import { faLock } from '@fortawesome/free-solid-svg-icons';
   import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
+
+  import Navbar from "./lib/Navbar.svelte";
 </script>
 
 <main>
-  <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
-    <div class="container"><a class="navbar-brand" href="/">OmniRSS</a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
-      <div class="collapse navbar-collapse" id="navcol-1"></div>
-    </div>
-  </nav>
+  <Navbar />
   <header class="text-center text-white masthead" style="background:url('/assets/img/unsplash-boom-mic.jpeg')no-repeat center center;background-size:cover;">
     <div class="overlay"></div>
     <div class="container">
