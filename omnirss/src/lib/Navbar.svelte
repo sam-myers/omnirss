@@ -8,7 +8,6 @@
     .navbar {
         box-sizing: border-box;
         display: flex;
-        max-width: 720px;
         padding-left: 0.75rem;
         margin-left: auto;
         margin-right: auto;

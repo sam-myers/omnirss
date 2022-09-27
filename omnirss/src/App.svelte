@@ -1,95 +1,15 @@
 <script>
-  import Fa from 'svelte-fa'
-  import { faGithub } from '@fortawesome/free-brands-svg-icons';
-  import { faLock } from '@fortawesome/free-solid-svg-icons';
-  import { faPuzzlePiece } from '@fortawesome/free-solid-svg-icons';
-
   import Navbar from "./lib/Navbar.svelte";
+  import Header from "./lib/Header.svelte";
+  import Features from "./lib/Features.svelte";
+  import Showcase from "./lib/Showcase.svelte";
+  import Footer from "./lib/Footer.svelte";
 </script>
 
 <main>
   <Navbar />
-  <header class="text-center text-white masthead" style="background:url('/assets/img/unsplash-boom-mic.jpeg')no-repeat center center;background-size:cover;">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-9 mx-auto position-relative">
-          <h1 class="mb-5">Turn Spotify Podcasts Into RSS</h1>
-        </div>
-        <div class="col-md-10 col-lg-8 col-xl-7 mx-auto position-relative">
-          <form action="/.netlify/functions/search" method="GET">
-            <div class="row">
-              <div class="col-12 col-md-9 mb-2 mb-md-0">
-                <input class="form-control form-control-lg" type="text" placeholder="Show name..." name="query" required="" minlength="1">
-              </div>
-              <div class="col-12 col-md-3">
-                <button class="btn btn-primary btn-lg" type="submit">Search</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </header>
-  <section class="text-center bg-light features-icons">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-            <div class="icon"><Fa icon={faPuzzlePiece} rotate="-45" translateY="{-0.1}" /></div>
-            <h3>Bring Your Own Client</h3>
-            <p class="lead mb-0">Works with any podcatcher / RSS client.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-            <div class="icon"><Fa icon={faLock} translateX="{0.03}"/></div>
-            <h3>Private</h3>
-            <p class="lead mb-0">No invasive trackers. No ads.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="mx-auto features-icons-item mb-5 mb-lg-0 mb-lg-3">
-            <div class="icon"><Fa icon={faGithub} /></div>
-            <h3>Open Source</h3>
-            <p class="lead mb-0"><a href="https://github.com/sam-myers/omnirss/">Source Code.</a> Permissively licensed.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="showcase">
-    <div class="container-fluid p-0">
-      <div class="row g-0">
-        <div class="col-lg-6 text-white order-lg-2 showcase-img" style="background: url('/assets/img/spotify-logo.png') center / contain no-repeat;border-style: none;"><span></span></div>
-        <div class="col-lg-6 my-auto order-lg-1 showcase-text">
-          <h2>RSS from Spotify</h2>
-          <p class="lead mb-0">Points to Spotify for having an API.<br>Minus points to Spotify for being the only podcast platform to not natively support RSS.</p>
-        </div>
-      </div>
-      <div class="row g-0">
-        <div class="col-lg-6 text-white showcase-img" style="background-image:url('/assets/img/bg-showcase-2.jpg');"><span></span></div>
-        <div class="col-lg-6 my-auto order-lg-1 showcase-text">
-          <h2>Where is the Money?</h2>
-          <p class="lead mb-0">This project generates no revenue. It's not sufficiently useful to monetize, and I don't do ads for reasons of personal and professional ethics. A massive thank you to <a href="https://www.netlify.com/">Netlify</a> for their generous hosting that allows me to offer this service for free.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  <footer class="bg-light footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 text-center text-lg-start my-auto h-100">
-          <p class="text-muted small mb-4 mb-lg-0">© Subtle Software LLC 2022. Some Rights Reserved. Proudly made in the USA. 🇺🇸</p>
-        </div>
-      </div>
-    </div>
-  </footer>
+  <Header />
+  <Features />
+  <Showcase />
+  <Footer />
 </main>
-
-<style>
-  .icon {
-    font-size: 4.5rem;
-    color: rgb(0, 123, 255);
-  }
-</style>
