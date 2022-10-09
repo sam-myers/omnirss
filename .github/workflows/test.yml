@@ -8,9 +8,9 @@ jobs:
     strategy:
       matrix:
         dir:
-          - "netlify/functions/search"
-          - "netlify/functions/spotify-rss"
-          - "packages/config"
+          - "functions/search"
+          - "functions/spotify-rss"
+          - "functions/packages/config"
     steps:
       - uses: actions/checkout@v3
       - name: Lint

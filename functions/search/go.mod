@@ -9,7 +9,7 @@ require (
 	github.com/zmb3/spotify/v2 v2.3.0
 )
 
-replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ../../../packages/config
+replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ./../packages/config
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
