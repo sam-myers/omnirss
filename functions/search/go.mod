@@ -14,7 +14,7 @@ replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ./../packages/con
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/ilyakaznacheev/cleanenv v1.3.0 // indirect
+	github.com/ilyakaznacheev/cleanenv v1.4.0 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1 // indirect
