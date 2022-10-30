@@ -1,6 +1,16 @@
 version: 2
 updates:
-  - package-ecosystem: "cargo"
-    directory: "/"
+  - package-ecosystem: "gomod"
+    directory: "/functions/search"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "gomod"
+    directory: "/functions/spotify-rss"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "gomod"
+    directory: "/functions/packages/config"
     schedule:
       interval: "weekly"
