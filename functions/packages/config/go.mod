@@ -3,7 +3,7 @@ module github.com/sam-myers/omnirss/packages/config
 go 1.19
 
 require (
-	github.com/ilyakaznacheev/cleanenv v1.3.0
+	github.com/ilyakaznacheev/cleanenv v1.4.0
 	github.com/zmb3/spotify/v2 v2.3.0
 	golang.org/x/oauth2 v0.0.0-20221006150949-b44042a4b9c1
 )
