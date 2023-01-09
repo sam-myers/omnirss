@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/ilyakaznacheev/cleanenv v1.4.0
-	github.com/zmb3/spotify/v2 v2.3.0
+	github.com/zmb3/spotify/v2 v2.3.1
 	golang.org/x/oauth2 v0.1.0
 )
 
