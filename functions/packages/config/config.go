@@ -9,7 +9,7 @@ import (
 
 type Config struct {
 	// Server
-	BaseUrl string `env:"BASE_URL"`
+	Url string `env:"URL"`
 
 	// Spotify
 	SpotifyId     string `yaml:"spotify_id"     env:"SPOTIFY_ID"`
@@ -50,8 +50,8 @@ func (c *Config) requiredVarsSet() error {
 		return fmt.Errorf("SPOTIFY_SECRET is required")
 	}
 
-	if c.BaseUrl == "" {
-		return fmt.Errorf("BASE_URL is required")
+	if c.Url == "" {
+		return fmt.Errorf("URL is required")
 	}
 
 	return nil
