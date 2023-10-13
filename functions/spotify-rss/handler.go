@@ -71,8 +71,8 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 	}
 
 	return &events.APIGatewayProxyResponse{
-		StatusCode: 500,
-		Headers:    map[string]string{"Content-Type": "text/plain"},
+		StatusCode: 200,
+		Headers:    map[string]string{"Content-Type": "application/xml"},
 		Body:       buff.String(),
 	}, nil
 }

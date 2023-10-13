@@ -1,5 +1,7 @@
 {
   "devDependencies": {
-    "cypress": "11.2.0"
+    "cypress": "11.2.0",
+    "netlify-cli": "^16.7.0",
+    "netlify-plugin-cypress": "^2.2.1"
   }
 }

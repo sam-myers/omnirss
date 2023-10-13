@@ -21,4 +21,4 @@ Prerequisites:
 - Download the `netlify` CLI to build & run the serverless functions locally.
 - Download the `doppler` CLI for development secrets.
 
-Start with `doppler run -- cargo run`.
+Start with `doppler run -- netlify dev`.
