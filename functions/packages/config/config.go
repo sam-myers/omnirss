@@ -11,7 +11,7 @@ type Config struct {
 	// Server
 	BaseUrl string `env:"BASE_URL"`
 
-	// Airtable
+	// Spotify
 	SpotifyId     string `yaml:"spotify_id"     env:"SPOTIFY_ID"`
 	SpotifySecret string `yaml:"spotify_secret" env:"SPOTIFY_SECRET"`
 
