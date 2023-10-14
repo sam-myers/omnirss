@@ -7,6 +7,7 @@ require (
 	github.com/sam-myers/omnirss/packages/config v0.0.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/zmb3/spotify/v2 v2.3.1
+	github.com/getsentry/sentry-go v0.11.0
 )
 
 replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ./../packages/config
