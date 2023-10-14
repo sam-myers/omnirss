@@ -39,6 +39,6 @@ describe('Search Results', () => {
     it('Check navigation to home page', () => {
         cy.visit('/.netlify/functions/search?query=Joe+Rogan');
         cy.get('.navbar-brand').click();
-        cy.url().should('eq', Cypress.config().baseUrl);
+        cy.url().should('eq', Cypress.config().baseUrl + '/');
     })
 })
