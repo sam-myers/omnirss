@@ -35,4 +35,10 @@ describe('Search Results', () => {
                     .should('include', 'application/xml');
             });
     })
+
+    it('Check navigation to home page', () => {
+        cy.visit('/.netlify/functions/search?query=Joe+Rogan');
+        cy.get('.navbar-brand').click();
+        cy.url().should('eq', '/');
+    })
 })
