@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/zmb3/spotify/v2"
 	spotifyauth "github.com/zmb3/spotify/v2/auth"
+	"github.com/getsentry/sentry-go"
 )
 
 var config *omnirssconfig.Config
@@ -18,6 +19,20 @@ func main() {
 
 	// Config
 	config, err = omnirssconfig.NewConfigFromEnv()
+	if err != nil {
+		log.WithError(err).Fatal("Failed to read config")
+		sentry.CaptureException(err)
+	}
+
+	// Init Sentry
+	err = sentry.Init(sentry.ClientOptions{
+		Dsn: config.SentryDsn,
+	})
+	if err != nil {
+		log.WithError(err).Fatal("sentry.Init: %s", err)
+		sentry.CaptureException(err)
+	}
+	defer sentry.Flush(time.Second * 5)
 
 	// Init logging
 	log = logrus.New()
@@ -28,15 +43,12 @@ func main() {
 		log.SetLevel(logrus.InfoLevel)
 	}
 
-	if err != nil {
-		log.WithError(err).Fatal("Failed to read config")
-	}
-
 	// Init Spotify
 	ctx := context.Background()
 	token, err := config.ClientCredentials().Token(ctx)
 	if err != nil {
 		log.WithError(err).Fatal("Failed to get Spotify token")
+		sentry.CaptureException(err)
 	}
 	httpClient := spotifyauth.New().Client(ctx, token)
 	spotifyClient = spotify.New(httpClient)
