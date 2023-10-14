@@ -24,6 +24,15 @@ func main() {
 		sentry.CaptureException(err)
 	}
 
+	// Init logging
+	log = logrus.New()
+	log.Formatter = &logrus.TextFormatter{}
+	if config.Debug {
+		log.SetLevel(logrus.DebugLevel)
+	} else {
+		log.SetLevel(logrus.InfoLevel)
+	}
+
 	// Init Sentry
 	err = sentry.Init(sentry.ClientOptions{
 		Dsn: config.SentryDsn,
@@ -33,15 +42,6 @@ func main() {
 		sentry.CaptureException(err)
 	}
 	defer sentry.Flush(time.Second * 5)
-
-	// Init logging
-	log = logrus.New()
-	log.Formatter = &logrus.TextFormatter{}
-	if config.Debug {
-		log.SetLevel(logrus.DebugLevel)
-	} else {
-		log.SetLevel(logrus.InfoLevel)
-	}
 
 	// Init Spotify
 	ctx := context.Background()
