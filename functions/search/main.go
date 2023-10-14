@@ -60,8 +60,9 @@ func main() {
 	ctx := context.Background()
 	token, err := config.ClientCredentials().Token(ctx)
 	if err != nil {
-		log.WithError(err).Fatal("Failed to get Spotify token")
-		sentry.CaptureException(err)
+		wrappedErr := fmt.Errorf("Failed to get Spotify token: %w", err)
+		log.WithError(wrappedErr).Fatal()
+		sentry.CaptureException(wrappedErr)
 	}
 	httpClient := spotifyauth.New().Client(ctx, token)
 	spotifyClient = spotify.New(httpClient)
