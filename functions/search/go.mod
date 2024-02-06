@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-lambda-go v1.46.0
 	github.com/sam-myers/omnirss/packages/config v0.0.0
 	github.com/sirupsen/logrus v1.9.3
-	github.com/zmb3/spotify/v2 v2.3.1
+	github.com/zmb3/spotify/v2 v2.4.1
 )
 
 replace github.com/sam-myers/omnirss/packages/config v0.0.0 => ./../packages/config
