@@ -12,6 +12,6 @@ jobs:
           - "functions/spotify-rss"
           - "functions/packages/config"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Lint
         run: pushd "${{ matrix.dir }}"; if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
